@@ -8,11 +8,11 @@ TACKER_DIR="$TOP_DIR/scripts/ubuntu/tacker"
 source "$TOP_DIR/config/paths"
 source "$LIB_DIR/functions.guest.sh"
 
-OPENSTACK_RELEASE=pike
+OPENSTACK_RELEASE=yoga
 
 #------------------------------------------------------------------------------
 # Install Tacker
-# https://docs.openstack.org/tacker/pike/install/manual_installation.html
+# https://docs.openstack.org/tacker/yoga/install/manual_installation.html
 #------------------------------------------------------------------------------
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

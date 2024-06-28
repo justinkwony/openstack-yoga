@@ -12,7 +12,7 @@
 | Keystone  httpd       |  |      Swift-Object     |  |                       |
 +-----------------------+  +-----------------------+  +-----------------------+
     enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT 
-    enp0s8|Unconfigured         enp0s8|Unconfigured         enp0s8|Unconfigured
+    enp0s8|Unconfigured        enp0s8|Unconfigured        enp0s8|Unconfigured
 
 ```
 Create three Virtual Machines in Oracle VM Virtual Box as given in the diagrame above and set networking.
@@ -30,7 +30,7 @@ ssh-copy-id storage
 10.10.0.41	storage
 ```
 ```
-git clone https://github.com/Sangwan70/openstack-zed.git
+git clone https://github.com/justinkwony/openstack-yoga.git
 ```
 ```
 cd scripts

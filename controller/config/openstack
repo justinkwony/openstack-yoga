@@ -1,7 +1,7 @@
 # This file contains OpenStack configuration data. 
-# bobcat                  (production release; cloud-archive:bobcat)
+# yoga                  (production release; cloud-archive:yoga)
 # caracal                 (pre-release testing: cloud-archive:caracal)
-: ${OPENSTACK_RELEASE:=bobcat}
+: ${OPENSTACK_RELEASE:=yoga}
 
 # CirrOS image URL
 if [ "$(uname -m)" = "x86_64" ]; then
