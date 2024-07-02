@@ -1,6 +1,7 @@
 # This file contains bash functions that may be used by both guest and host
 # systems.
 
+# Non-recursive removal of all files except README.*
 function clean_dir {
     local target_dir=$1
     if [ ! -e "$target_dir" ]; then
@@ -40,7 +41,7 @@ function yes_or_no {
     local prompt=$1
     local input=""
     while : ; do
-        read -p "$prompt (Y/n): " input
+        read -t 10 -p "$prompt (Y/n): " input
         case "$input" in
             N|n)
                 return 1

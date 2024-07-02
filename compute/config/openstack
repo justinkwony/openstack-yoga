@@ -1,15 +1,18 @@
 # This file contains OpenStack configuration data. 
-# zed                (production release; cloud-archive:train)
-# yoga                 (pre-release testing: cloud-archive:train-proposed)
+# caracal            (pre-release testing: cloud-archive:caracal)
+# zed                (production release: cloud-archive:zed)
+# yoga               (production release: cloud-archive:yoga)
 : ${OPENSTACK_RELEASE:=yoga}
 
 # CirrOS image URL
 if [ "$(uname -m)" = "x86_64" ]; then
     arch=x86_64
+elif [ "$(uname -m)" = "aarch64" ]; then
+    arch=aarch64
 else
     arch=i386
 fi
-CIRROS_URL="http://download.cirros-cloud.net/0.5.3/cirros-0.5.3-$arch-disk.img"
+CIRROS_URL="http://download.cirros-cloud.net/0.6.2/cirros-0.6.2-$arch-disk.img"
 unset arch
 
 # Name used for CirrOS image in glance
@@ -20,6 +23,8 @@ CIRROS_IMG_NAME="cirros"
 # Networks used by OpenStack setup
 NETWORK_0="mgmt 10.10.0.0"
 NETWORK_1="provider 10.10.1.0"
+
+#------------------------------------------------------------------------------
 
 # Public network
 : ${PROVIDER_NETWORK_CIDR:=10.10.1.0/24}

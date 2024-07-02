@@ -1,4 +1,4 @@
-# openstack-zed
+# openstack-yoga
 ```
 ------------+--------------------------+--------------------------+------------
             |                          |                          |
@@ -13,21 +13,27 @@
 +-----------------------+  +-----------------------+  +-----------------------+
     enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT 
     enp0s8|Unconfigured        enp0s8|Unconfigured        enp0s8|Unconfigured
+                               sdb                        sdb   |swift
+                               sdc                        sdc   |swift
+                                                          sdd   |cinder
+```
+add Network Interface
+add Storage
 
-```
 Create three Virtual Machines in Oracle VM Virtual Box as given in the diagrame above and set networking.
-Login as user "stack" and generate ssh key pair
-```
-ssh-keygen -P ""
-ssh-copy-id controller
-ssh-copy-id compute
-ssh-copy-id storage
-```
+Login as user "stack" and modify all nodes
 ```
 /etc/hosts
 10.10.0.11	controller
 10.10.0.31	compute
 10.10.0.41	storage
+```
+generate ssh key pair, all nodes
+```
+ssh-keygen -P ""
+ssh-copy-id controller
+ssh-copy-id compute
+ssh-copy-id storage
 ```
 ```
 git clone https://github.com/justinkwony/openstack-yoga.git

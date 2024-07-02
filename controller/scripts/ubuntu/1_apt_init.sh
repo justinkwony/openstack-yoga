@@ -34,16 +34,13 @@ function set_apt_proxy {
 
 set_apt_proxy
 
-# Use repository redirection for faster repository access.
-# instead of the 'us.archive.ubuntu.com' ones in United States
-sudo sed  -i 's/us.archive.ubuntu.com/archive.ubuntu.com/g' /etc/apt/sources.list
+# sudo sed  -i 's/us.archive.ubuntu.com/archive.ubuntu.com/g' /etc/apt/sources.list
 
 # Get apt index files
 sudo apt update
 
 # ---------------------------------------------------------------------------
 # Enable the OpenStack repository
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #--------------------------------------------------------------------------
 
 echo "Installing packages needed for add-apt-repository."
@@ -53,10 +50,6 @@ case "$OPENSTACK_RELEASE" in
     yoga)
         REPO=cloud-archive:yoga
         SRC_FILE=cloudarchive-yoga.list
-        ;;
-    caracal)
-        REPO=cloud-archive:caracal
-        SRC_FILE=cloudarchive-caracal.list
         ;;
     zed)
         REPO=cloud-archive:zed

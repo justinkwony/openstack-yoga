@@ -1,6 +1,7 @@
 # This file contains OpenStack configuration data. 
-# yoga                  (production release; cloud-archive:yoga)
-# caracal                 (pre-release testing: cloud-archive:caracal)
+# caracal            (pre-release testing: cloud-archive:caracal)
+# zed                (production release: cloud-archive:zed)
+# yoga               (production release: cloud-archive:yoga)
 : ${OPENSTACK_RELEASE:=yoga}
 
 # CirrOS image URL
@@ -11,7 +12,7 @@ elif [ "$(uname -m)" = "aarch64" ]; then
 else
     arch=i386
 fi
-CIRROS_URL="http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-$arch-disk.img"
+CIRROS_URL="http://download.cirros-cloud.net/0.6.2/cirros-0.6.2-$arch-disk.img"
 unset arch
 
 # Name used for CirrOS image in glance
@@ -44,3 +45,4 @@ NETWORK_1="provider 10.10.1.0"
 
 : ${REGION:=RegionOne}
 
+# vim: set ai ts=4 sw=4 et ft=sh:

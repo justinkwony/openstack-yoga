@@ -25,6 +25,11 @@ function source_deploy {
     fi
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# If our sudo user's PATH is preserved (and does not contain sbin dirs),
+# some commands won't be found. Observed with Vagrant shell provisioner
+# scripts using sudo after "su - vagrant".
+# Adding to the path seems preferable to messing with the vagrant user's
+# sudoers environment (or working with a separate Vagrant user).
 
 function fix_path_env {
     if is_root; then return 0; fi
@@ -38,6 +43,9 @@ function zero_empty_space {
     sudo rm /filler
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# For guest scripts to let stack know they are running; used when stackauto
+# runs scripts inside of the VM (STATUS_DIR directory must be shared between
+# host and VM).
 
 function indicate_current_auto {
     if [ "${VM_SHELL_USER:-}" = "stack" ]; then
@@ -94,6 +102,8 @@ function exec_logfile {
 # Functions that need to run as root
 #-------------------------------------------------------------------------------
 
+# /sbin/mount.vboxsf often ends up as a broken symlink, resulting in errors
+# when trying to mount the share in stackauto.
 function as_root_fix_mount_vboxsf_link {
     local file=/sbin/mount.vboxsf
     if [ -L $file -a ! -e $file ]; then
@@ -103,6 +113,10 @@ function as_root_fix_mount_vboxsf_link {
 
         sdir="/usr/lib/VBoxGuestAdditions"
         if [ -L "$sdir" -a ! -e "$sdir" ]; then
+          # /usr/lib/VBoxGuestAdditions is a convenient link into a directory
+          # under /opt that changes its name with VirtualBox versions.
+          # In some cases, the link was missing but /sbin/mount.vboxsf
+          # pointed there.
           echo "$sdir is a broken symlink:"
           ls -l "sdir"
           shopt -s nullglob
@@ -166,6 +180,8 @@ function as_root_exec_script {
 # Root wrapper around devstack functions for manipulating config files
 #-------------------------------------------------------------------------------
 
+# Return predictable temporary path for configuration file editing.
+# Used to simplify debugging.
 function get_iniset_tmpfile {
     local file=$1
 

@@ -61,20 +61,21 @@ case "$OPENSTACK_RELEASE" in
         ;;
 esac
 
-echo "Adding cloud repo: $REPO"
-sudo add-apt-repository "$REPO"
+# skip cloud-archive:yoga, ubuntu 22.04.4
+##echo "Adding cloud repo: $REPO"
+##sudo add-apt-repository "$REPO"
 
 # Get index files only for ubuntu-cloud repo but keep standard lists
-if [ -f "/etc/apt/sources.list.d/$SRC_FILE" ]; then
-    sudo apt update \
-        -o Dir::Etc::sourcelist="sources.list.d/$SRC_FILE" \
-        -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
-else
-    echo "ERROR: apt source not found: /etc/apt/sources.list.d/$SRC_FILE"
-    exit 1
-fi
+##if [ -f "/etc/apt/sources.list.d/$SRC_FILE" ]; then
+##    sudo apt update \
+##        -o Dir::Etc::sourcelist="sources.list.d/$SRC_FILE" \
+##        -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+##else
+##    echo "ERROR: apt source not found: /etc/apt/sources.list.d/$SRC_FILE"
+##    exit 1
+##fi
 
-# Disable automatic updates (they compete with our scripts for the dpkg lock)
+# Disable automatic updates
 sudo systemctl disable apt-daily.service
 sudo systemctl disable apt-daily.timer
 
