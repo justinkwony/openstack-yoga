@@ -69,11 +69,11 @@ sudo systemctl status rsync.service
 # Obtain the configuration files from the Object Storage source repository.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-sudo mkdir -p /etc/swift
+###sudo mkdir -p /etc/swift
 
-sudo curl -o /etc/swift/account-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/account-server.conf-sample
-sudo curl -o /etc/swift/container-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/container-server.conf-sample
-sudo curl -o /etc/swift/object-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/object-server.conf-sample
+###sudo curl -o /etc/swift/account-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/account-server.conf-sample
+###sudo curl -o /etc/swift/container-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/container-server.conf-sample
+###sudo curl -o /etc/swift/object-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/object-server.conf-sample
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Edit the /etc/swift/account-server.conf file.
