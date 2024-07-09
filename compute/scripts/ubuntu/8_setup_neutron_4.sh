@@ -50,4 +50,6 @@ source "$CONFIG_DIR/admin-openstackrc.sh"
 echo "Listing agents to verify successful launch of the neutron agents."
 
 echo "openstack network agent list"
-openstack network agent list
+# openstack network agent list
+AUTH="source $CONFIG_DIR/admin-openstackrc.sh"
+node_ssh controller "$AUTH; openstack network agent list"
