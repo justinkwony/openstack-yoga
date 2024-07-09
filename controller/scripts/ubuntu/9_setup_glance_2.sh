@@ -25,7 +25,7 @@ echo "Setting up database for glance."
 setup_database glance "$GLANCE_DB_USER" "$GLANCE_DBPASS"
 
 echo "Sourcing the admin credentials."
-source "$CONFIG_DIR/admin-openrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
 
 glance_admin_user=glance
 

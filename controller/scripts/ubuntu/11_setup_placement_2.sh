@@ -21,7 +21,7 @@ echo "Setting up placement database."
 setup_database placement "$PLACEMENT_DB_USER" "$PLACEMENT_DBPASS"
 
 echo "Sourcing the admin credentials."
-source "$CONFIG_DIR/admin-openrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
 
 placement_admin_user=placement
 

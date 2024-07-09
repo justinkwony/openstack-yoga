@@ -163,7 +163,7 @@ sudo systemctl status trove-api trove-taskmanager trove-conductor
 sudo systemctl restart apache2
 
 echo -n "Waiting for openstack datastore list."
-source ~/admin-openrc.sh
+source "$CONFIG_DIR/admin-openstackrc.sh"
 until openstack datastore list; do
     sleep 1
     echo -n .

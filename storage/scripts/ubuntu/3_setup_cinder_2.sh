@@ -7,7 +7,7 @@ TOP_DIR=$(cd $(cat "../TOP_DIR" 2>/dev/null||echo $(dirname "$0"))/.. && pwd)
 source "$TOP_DIR/config/paths"
 source "$CONFIG_DIR/credentials"
 source "$LIB_DIR/functions.guest.sh"
-source "$CONFIG_DIR/admin-openrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
 
 exec_logfile
 
@@ -96,5 +96,4 @@ iniset_sudo $conf oslo_concurrency lock_path /var/lib/cinder/tmp
 
 echo "Restarting cinder service."
 sudo systemctl restart tgt && sudo systemctl enable tgt
-sudo systemctl restart  cinder-volume && sudo systemctl enable  cinder-volume 
-
+sudo systemctl restart cinder-volume && sudo systemctl enable cinder-volume

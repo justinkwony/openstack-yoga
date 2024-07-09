@@ -173,7 +173,7 @@ sudo systemctl restart heat-engine
 sudo systemctl restart apache2
 
 echo -n "Waiting for openstack stack list."
-source ~/admin-openrc.sh
+source "$CONFIG_DIR/admin-openstackrc.sh"
 until openstack stack list; do
     sleep 1
     echo -n .

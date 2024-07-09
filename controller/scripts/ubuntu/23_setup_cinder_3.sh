@@ -7,7 +7,7 @@ TOP_DIR=$(cd $(cat "../TOP_DIR" 2>/dev/null||echo $(dirname "$0"))/.. && pwd)
 source "$TOP_DIR/config/paths"
 source "$CONFIG_DIR/credentials"
 source "$LIB_DIR/functions.guest.sh"
-source "$CONFIG_DIR/admin-openrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
 
 exec_logfile
 
@@ -81,7 +81,7 @@ check_cinder_services
 #------------------------------------------------------------------------------
 
 echo "Sourcing the demo credentials."
-AUTH="source $CONFIG_DIR/demo-openrc.sh"
+AUTH="source $CONFIG_DIR/demo-openstackrc.sh"
 
 echo "openstack volume create --size 1 volume2"
 node_ssh controller "$AUTH; openstack volume create --size 1 volume2"
