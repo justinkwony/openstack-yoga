@@ -1,6 +1,6 @@
 sudo apt remove -y --purge python3-wcwidth 
-sudo apt-get -y remove apache2
-sudo apt-get -y purge apache2
+sudo apt remove -y --purge apache2
+sudo apt purge apache2
 sudo apt autoremove
 sudo apt remove -y --purge python3-cmd2
 sudo apt remove -y --purge python3-oslo.utils python3-docutils python3-oslo.serialization python3-oslo.context python3-deprecation python3-cliff python3-docutils
@@ -24,6 +24,7 @@ sudo apt remove -y --purge rabbitmq-server
 sudo apt remove -y --purge swift 
 sudo apt remove -y --purge swift-account
 sudo apt remove -y --purge python3-swift python3-swiftclient keystone nova-api nova-conductor nova-novncproxy nova-scheduler
+sudo apt remove -y --purge python3-trove trove-common trove-api trove-taskmanager trove-conductor
 
 sudo rm -rf /etc/cinder/ /etc/glance/ /etc/apache2/ /etc/mysql /etc/keystone/ /etc/my.cnf.d/ /etc/neutron/ /etc/nova/ /var/lib/cinder/ \
 	/var/lib/apache2/ /var/lib/keystone/ /var/lib/placement /var/lib/mysql /var/lib/glance/ /var/lib/nova/ /var/lib/openstack-dashboard/ \

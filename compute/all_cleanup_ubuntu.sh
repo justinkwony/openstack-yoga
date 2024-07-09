@@ -25,3 +25,5 @@ sudo rm -rf /var/log/*.lsl  /etc/rsyncd.conf /var/cache/swift /etc/swift /etc/ap
 sudo sed -i "s/^net.*$//g" /etc/sysctl.conf
 sudo apt autoremove -y
 
+sudo umount /dev/sdb
+sudo umount /dev/sdc

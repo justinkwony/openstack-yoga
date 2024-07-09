@@ -23,3 +23,7 @@ sudo rm -rf /var/log/*.lsl /etc/rsyncd.conf  /etc/rsyslog.conf
 sudo sed -i "s/^net.*$//g" /etc/sysctl.conf
 sudo apt autoremove -y
 
+sudo vgremove cinder-vol1 -y
+sudo pvremove /dev/sdd
+sudo umount /dev/sdb
+sudo umount /dev/sdc
