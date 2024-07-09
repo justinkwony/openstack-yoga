@@ -6,10 +6,9 @@
 +-----------+-----------+  +-----------+-----------+  +-----------+-----------+
 |     [ controller ]    |  |       [ compute ]     |  |       [ storage ]     |
 |     (Control Node)    |  |      Nova-Compute     |  |      Swift-Container  |
-|     Cinder Volume     |  |     Cinder Volume     |  |      Swift-Account    |
-| MariaDB   RabbitMQ    |  |      Swift-Account    |  |       Swift-Object    |
-| Memcached Swift Proxy |  |    Swift-Container    |  |                       |
-| Keystone  httpd       |  |      Swift-Object     |  |                       |
+| MariaDB   RabbitMQ    |  |     Swift-Container   |  |      Swift-Account    |
+| Memcached Swift Proxy |  |     Swift-Account     |  |      Swift-Object     |
+| Keystone  httpd       |  |     Swift-Object      |  |      Cinder Volume    |
 +-----------------------+  +-----------------------+  +-----------------------+
     enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT 
     enp0s8|Unconfigured        enp0s8|Unconfigured        enp0s8|Unconfigured
