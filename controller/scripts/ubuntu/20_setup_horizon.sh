@@ -86,7 +86,7 @@ iniset_sudo_no_section $conf "OPENSTACK_KEYSTONE_DEFAULT_ROLE" '"admin"'
 # Here, we would disable layer-3 networking servies for networking option 1.
 
 echo "Setting timezone to UTC."
-iniset_sudo_no_section $conf "TIME_ZONE" '"Asia/Kolkata"'
+iniset_sudo_no_section $conf "TIME_ZONE" '"Asia/Seoul"'
 
 conf=/etc/apache2/conf-available/openstack-dashboard.conf
 echo "Verifying presence of 'WSGIApplicationGroup %{GLOBAL}'."
