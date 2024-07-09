@@ -22,6 +22,6 @@ echo "IP address of this node's interface in management network: $MY_MGMT_IP."
 
 # echo "Installing Swift and other packages required for Object Storage.."
 sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall swift swift-account
-sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall swift-container swift-object xfsprogs 
-sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall python3-swift python3-swiftclient rsync  
+sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall swift-container swift-object xfsprogs
+sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall python3-swift python3-swiftclient rsync
 

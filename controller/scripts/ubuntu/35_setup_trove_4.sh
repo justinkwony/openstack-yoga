@@ -21,11 +21,11 @@ wait_for_keystone
 #------------------------------------------------------------------------------
 
 echo "Dwnloading Image for Ubuntu 22.04"
-echo
-if [ ! -f 'trove-master-guest-ubuntu-jammy.qcow2' ]
-then
-	wget https://tarballs.opendev.org/openstack/trove/images/trove-master-guest-ubuntu-jammy.qcow2
-fi
+# echo
+# if [ ! -f 'trove-master-guest-ubuntu-jammy.qcow2' ]
+# then
+# 	wget https://tarballs.opendev.org/openstack/trove/images/trove-master-guest-ubuntu-jammy.qcow2
+# fi
 #------------------------------------------------------------------------------
 # Creating Trove-Ubuntu openstack Image from the downloaded file
 #------------------------------------------------------------------------------
@@ -34,9 +34,9 @@ echo
 echo "Creating Trove-Ubuntu openstack Image from the downloaded file.."
 echo 
 
-openstack image create Trove-Ubuntu --file=trove-master-guest-ubuntu-jammy.qcow2 --disk-format=qcow2 --container-format=bare --tag=trove --public
+# openstack image create Trove-Ubuntu --file=trove-master-guest-ubuntu-jammy.qcow2 --disk-format=qcow2 --container-format=bare --tag=trove --public
 
-sudo rm -rf trove-master-guest-ubuntu-jammy.qcow2
+# sudo rm -rf trove-master-guest-ubuntu-jammy.qcow2
 
 #------------------------------------------------------------------------------
 # Adding MariaDB, MySQL and PostgreSQL to the Datastore

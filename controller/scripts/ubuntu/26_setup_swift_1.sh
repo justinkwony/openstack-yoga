@@ -36,18 +36,18 @@ then
    sudo chmod 777 /etc/swift/
 #   sudo curl -o /etc/swift/swift.conf https://opendev.org/openstack/swift/raw/branch/master/etc/swift.conf-sample
    sudo cp "$CONFIG_DIR/swift.conf-sample" /etc/swift/swift.conf
-   sudo chgrp swift /etc/swift/proxy-server.conf
+   sudo chgrp swift /etc/swift/swift.conf
    sudo chmod 640 /etc/swift/swift.conf
 else
-    sudo mkdir /etc/swift/
-    sudo chmod -R 777 /etc/swift/
+   sudo mkdir /etc/swift/
+   sudo chmod -R 777 /etc/swift/
 #    sudo curl -o /etc/swift/swift.conf https://opendev.org/openstack/swift/raw/branch/master/etc/swift.conf-sample
    sudo cp "$CONFIG_DIR/swift.conf-sample" /etc/swift/swift.conf
-   sudo chgrp swift /etc/swift/proxy-server.conf
+   sudo chgrp swift /etc/swift/swift.conf
    sudo chmod 640 /etc/swift/swift.conf
 fi
 
 #sudo curl -o /etc/swift/proxy-server.conf https://opendev.org/openstack/swift/raw/branch/stable/zed/etc/proxy-server.conf-sample
 sudo cp "$CONFIG_DIR/proxy-server.conf-sample" /etc/swift/proxy-server.conf
-sudo chgrp swift /etc/swift/swift.conf
-sudo chmod 640 /etc/swift/proxy-server.conf
+sudo chgrp swift /etc/swift/proxy-server.conf
+sudo chmod 640 /etc/swift/proxy-server.conf``

@@ -31,7 +31,7 @@ echo
 echo "Creating openstack volume type needed.."
 echo
 
-if [ $(openstack volume type list | grep 'trove' | awk '{print $4}') == "$TROVE_VOL" ]
+if [ $(openstack volume type list | grep 'trove' | awk '{print $4}') == "$TROVE_VOL" ];
 then 
   echo "Openstack Volume type already exists. Continuing"
 else

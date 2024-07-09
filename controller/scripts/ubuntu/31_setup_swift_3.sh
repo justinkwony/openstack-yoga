@@ -94,15 +94,24 @@ iniset_sudo $conf swift-hash swift_hash_path_prefix TSPPre12
 iniset_sudo $conf storage-policy:0 name Policy-0
 iniset_sudo $conf storage-policy:0 default yes
 
-sudo scp account.ring.gz compute:/etc/swift/
-sudo scp container.ring.gz compute:/etc/swift/
-sudo scp object.ring.gz compute:/etc/swift/
-sudo scp swift.conf compute:/etc/swift/
+sudo chmod +r /etc/swift/swift.conf
+# sudo scp account.ring.gz compute:/etc/swift/
+# sudo scp container.ring.gz compute:/etc/swift/
+# sudo scp object.ring.gz compute:/etc/swift/
+# sudo scp swift.conf compute:/etc/swift/
+node_ssh compute "scp controller:/etc/swift/account.ring.gz .; sudo mv ./account.ring.gz /etc/swift"
+node_ssh compute "scp controller:/etc/swift/container.ring.gz .; sudo mv ./container.ring.gz /etc/swift"
+node_ssh compute "scp controller:/etc/swift/object.ring.gz .; sudo mv ./object.ring.gz /etc/swift"
+node_ssh compute "scp controller:/etc/swift/swift.conf .; sudo mv ./swift.conf /etc/swift"
 
-sudo scp account.ring.gz storage:/etc/swift/
-sudo scp container.ring.gz storage:/etc/swift/
-sudo scp object.ring.gz storage:/etc/swift/
-sudo scp swift.conf storage:/etc/swift/
+# sudo scp account.ring.gz storage:/etc/swift/
+# sudo scp container.ring.gz storage:/etc/swift/
+# sudo scp object.ring.gz storage:/etc/swift/
+# sudo scp swift.conf storage:/etc/swift/
+node_ssh storage "scp controller:/etc/swift/account.ring.gz .; sudo mv ./account.ring.gz /etc/swift"
+node_ssh storage "scp controller:/etc/swift/container.ring.gz .; sudo mv ./container.ring.gz /etc/swift"
+node_ssh storage "scp controller:/etc/swift/object.ring.gz .; sudo mv ./object.ring.gz /etc/swift"
+node_ssh storage "scp controller:/etc/swift/swift.conf .; sudo mv ./swift.conf /etc/swift"
 
 node_ssh compute sudo chown -R root:swift /etc/swift
 node_ssh storage sudo chown -R root:swift /etc/swift

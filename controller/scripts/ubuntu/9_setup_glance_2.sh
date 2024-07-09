@@ -124,7 +124,7 @@ echo "Adding pre-downloaded CirrOS image as $CIRROS_IMG_NAME to glance."
 # XXX install-guide changed from openstack to glance client, but did not
 #     change --public to --visibility public
 glance image-create --name "$CIRROS_IMG_NAME" \
-    --file "$HOME/img/$(basename $CIRROS_URL)" \
+    --file "$TOP_DIR/scripts/img/$(basename $CIRROS_URL)" \
     --disk-format qcow2 --container-format bare \
     --visibility public
 

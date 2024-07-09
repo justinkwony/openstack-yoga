@@ -15,9 +15,10 @@ indicate_current_auto
 echo "Installing Trove"
 
 # sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall python3-trove trove-common trove-api trove-taskmanager trove-conductor python3-troveclient
-sudo pip3 install trove-dashboard
-sudo cp /usr/local/lib/python3.10/dist-packages/trove_dashboard/enabled/_[1-9]*.py \
-      /usr/share/openstack-dashboard/openstack_dashboard/local/enabled/
-cd /usr/share/openstack-dashboard
-sudo python3 manage.py compress
-
+# sudo pip3 install trove-dashboard
+# sudo cp /usr/local/lib/python3.10/dist-packages/trove_dashboard/enabled/_[1-9]*.py \
+#       /usr/share/openstack-dashboard/openstack_dashboard/local/enabled/
+# cd /usr/share/openstack-dashboard
+# sudo python3 manage.py compress
+sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall python3-trove trove-common trove-api trove-taskmanager trove-conductor
+sudo pip3 install python-troveclient

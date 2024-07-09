@@ -69,11 +69,16 @@ sudo systemctl status rsync.service
 # Obtain the configuration files from the Object Storage source repository.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-###sudo mkdir -p /etc/swift
-
-###sudo curl -o /etc/swift/account-server.conf https://opendev.org/openstack/swift/raw/branch/stable/yoga/etc/account-server.conf-sample
-###sudo curl -o /etc/swift/container-server.conf https://opendev.org/openstack/swift/raw/branch/stable/yoga/etc/container-server.conf-sample
-###sudo curl -o /etc/swift/object-server.conf https://opendev.org/openstack/swift/raw/branch/stable/yoga/etc/object-server.conf-sample
+### sudo mkdir -p /etc/swift
+### sudo curl -o /etc/swift/account-server.conf https://opendev.org/openstack/swift/raw/branch/stable/yoga/etc/account-server.conf-sample
+sudo cp "$CONFIG_DIR/account-server.conf-sample" /etc/swift/account-server.conf
+sudo chmod 640 /etc/swift/account-server.conf
+### sudo curl -o /etc/swift/container-server.conf https://opendev.org/openstack/swift/raw/branch/stable/yoga/etc/container-server.conf-sample
+sudo cp "$CONFIG_DIR/container-server.conf-sample" /etc/swift/accontainercount-server.conf
+sudo chmod 640 /etc/swift/container-server.conf
+### sudo curl -o /etc/swift/object-server.conf https://opendev.org/openstack/swift/raw/branch/stable/yoga/etc/object-server.conf-sample
+sudo cp "$CONFIG_DIR/object-server.conf-sample" /etc/swift/object-server.conf
+sudo chmod 640 /etc/swift/object-server.conf
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Edit the /etc/swift/account-server.conf file.
