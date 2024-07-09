@@ -326,7 +326,7 @@ function setup_database {
 # neutron server if it does not reply for too long.
 function wait_for_neutron {
     (
-    source $CONFIG_DIR/demo-openstackrc.sh
+    source "$CONFIG_DIR/demo-openstackrc.sh"
     echo -n "Waiting for neutron to come up."
     local cnt=0
     until openstack network list >/dev/null 2>&1; do
