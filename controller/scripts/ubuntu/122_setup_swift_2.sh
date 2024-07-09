@@ -7,6 +7,7 @@ TOP_DIR=$(cd $(cat "../TOP_DIR" 2>/dev/null||echo $(dirname "$0"))/.. && pwd)
 source "$TOP_DIR/config/paths"
 source "$CONFIG_DIR/credentials"
 source "$LIB_DIR/functions.guest.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
 
 exec_logfile
 
@@ -18,8 +19,6 @@ indicate_current_auto
 
 echo "Setting up database for swift."
 setup_database swift "$SWIFT_DB_USER" "$SWIFT_DBPASS"
-
-source "$CONFIG_DIR/admin-openstackrc.sh"
 
 swift_admin_user=swift
 

@@ -34,7 +34,7 @@ iniset_sudo $conf no_section ETCD_INITIAL_CLUSTER "controller=http://10.10.0.11:
 iniset_sudo $conf no_section ETCD_INITIAL_CLUSTER_TOKEN "etcd-cluster-01"
 iniset_sudo $conf no_section ETCD_INITIAL_CLUSTER_STATE "new"
 
-echo "Restarting glance service."
+echo "Restarting etcd service."
 sudo systemctl enable etcd
 sudo systemctl start etcd
 

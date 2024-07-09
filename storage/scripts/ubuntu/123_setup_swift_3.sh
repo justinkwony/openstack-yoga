@@ -7,7 +7,6 @@ TOP_DIR=$(cd $(cat "../TOP_DIR" 2>/dev/null||echo $(dirname "$0"))/.. && pwd)
 source "$TOP_DIR/config/paths"
 source "$CONFIG_DIR/credentials"
 source "$LIB_DIR/functions.guest.sh"
-source "$CONFIG_DIR/admin-openstackrc.sh"
 
 exec_logfile
 
@@ -25,8 +24,8 @@ conf=/etc/rsyncd.conf
 
 iniset_sudo_no_section $conf uid swift
 iniset_sudo_no_section $conf gid swift
-iniset_sudo_no_section $conf log\ file "/var/log/rsyncd.log"
-iniset_sudo_no_section $conf pid\ file "/var/run/rsyncd.pid"
+iniset_sudo_no_section $conf log\ file /var/log/rsyncd.log
+iniset_sudo_no_section $conf pid\ file /var/run/rsyncd.pid
 iniset_sudo_no_section $conf address $MY_MGMT_IP
 
 iniset_sudo $conf account max\ connections 2
