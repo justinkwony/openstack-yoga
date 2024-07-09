@@ -33,17 +33,21 @@ sudo vgcreate cinder-vol1 /dev/$cinder_dev
 
 conf=/etc/lvm/lvm.conf
 
-# echo "Setting LVM filter line in $conf to only allow /dev/$cinder_dev."
-# sudo sed -i '0,/# filter = / {s|# filter = .*|filter = [ "a/'$cinder_dev'/", "r/.*/"]|}' $conf
-
-# echo "Verifying LVM filter."
-# grep "^[[:space:]]\{1,\}filter" $conf
-
 echo "Setting LVM filter line in $conf to only allow /dev/$cinder_dev."
 sudo sed -i '0,/# filter = / {s|# filter = .*|filter = [ "a/'$cinder_dev'/" ]|}' $conf
 
 echo "Verifying LVM filter."
 grep "^[[:space:]]\{1,\}filter" $conf
+
+#------------------------------------------------------------------------------
+# Verify Cinder operation
+# Fix) Openstack(Yoga) Bad or unexpected response from the storage volume backend
+# API: Create export for volume failed (Resource could not be found.).
+#------------------------------------------------------------------------------
+
+sudo touch /etc/tgt/conf.d/cinder.conf
+
+echo "include /var/lib/cinder/volumes/*" | sudo tee -a /etc/tgt/conf.d/cinder.conf
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Configure components
