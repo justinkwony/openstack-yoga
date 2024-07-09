@@ -7,7 +7,7 @@ TOP_DIR=$(cd $(cat "../TOP_DIR" 2>/dev/null||echo $(dirname "$0"))/.. && pwd)
 source "$TOP_DIR/config/paths"
 source "$CONFIG_DIR/credentials"
 source "$LIB_DIR/functions.guest.sh"
-source "$CONFIG_DIR/admin-openrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
 
 exec_logfile
 
@@ -117,7 +117,7 @@ sudo systemctl enable nova-compute.service
 
 echo
 echo -n "Confirming that the compute host is in the database."
-AUTH="source $CONFIG_DIR/admin-openrc.sh"
+AUTH="source $CONFIG_DIR/admin-openstackrc.sh"
 node_ssh controller "$AUTH; openstack compute service list --service nova-compute"
 until node_ssh controller "$AUTH; openstack compute service list --service nova-compute | grep 'compute.*up'" >/dev/null 2>&1; do
     sleep 2
@@ -137,7 +137,8 @@ node_ssh controller "sudo nova-manage cell_v2 discover_hosts --verbose"
 echo "Verifying operation of the Compute service."
 
 echo "openstack compute service list"
-openstack compute service list
+# openstack compute service list
+node_ssh controller "$AUTH; openstack compute service list"
 
 echo "Checking the cells and placement API are working successfully."
 echo "on controller node: nova-status upgrade check"
