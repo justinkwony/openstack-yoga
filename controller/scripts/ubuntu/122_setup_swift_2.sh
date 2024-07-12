@@ -40,7 +40,7 @@ openstack role add \
 echo "Registering swift with keystone so that other services can locate it."
 openstack service create \
     --name swift \
-    --description "NHOpenProject OpenStack Block Storage" \
+    --description "DemoProject OpenStack Block Storage" \
     object-store
 
 openstack endpoint create \

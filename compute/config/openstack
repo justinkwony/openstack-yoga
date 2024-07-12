@@ -40,8 +40,8 @@ NETWORK_1="provider 10.10.1.0"
 : ${SELFSERVICE_NETWORK_GATEWAY:=172.16.1.1}
 
 # DNS name server used by instance VMs.
-# Default is Google Public DNS (8.8.4.4).
-: ${DNS_RESOLVER:=8.8.4.4}
+# Default is Google Public DNS (8.8.8.8).
+: ${DNS_RESOLVER:=8.8.8.8}
 
 : ${REGION:=RegionOne}
 
