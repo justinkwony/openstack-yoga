@@ -3,6 +3,7 @@ set -o errexit -o nounset
 TOP_DIR=$(cd $(cat "../TOP_DIR" 2>/dev/null||echo $(dirname "$0"))/.. && pwd)
 source "$TOP_DIR/config/paths"
 source "$CONFIG_DIR/credentials"
+source "$CONFIG_DIR/openstack"
 source "$LIB_DIR/functions.guest.sh"
 source "$CONFIG_DIR/demo-openrc.sh"
 
@@ -366,7 +367,7 @@ if [ "$EXT_DNS" = true ]; then
     fi
 else
     echo "Clearing DNS name server(s) for subnet $PRIVATE_SUBNET."
-    # Servers are comma separated (e.g., "8.8.4.4, 8.8.8.8")
+    # Servers are comma separated (e.g., "8.8.8.8, 8.8.4.4")
     dns_servers=$(echo $current_dns_string | tr ' ,' '\n')
     for server in $dns_servers; do
         openstack subnet unset --dns-nameserver $server $PRIVATE_SUBNET
@@ -404,7 +405,7 @@ function check_for_other_vms {
     fi
     )
 }
-check_for_other_vms
+# check_for_other_vms
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 NOVA_SCHED_LOG=/var/log/nova/nova-scheduler.log

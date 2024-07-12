@@ -48,7 +48,7 @@ openstack network create --share --external \
     --provider-network-type flat provider
 
 echo "Creating a subnet on the public network."
-openstack subnet create --network provider  \
+openstack subnet create --network provider \
     --allocation-pool start="$START_IP_ADDRESS,end=$END_IP_ADDRESS" \
     --dns-nameserver "$DNS_RESOLVER" --gateway "$PROVIDER_NETWORK_GATEWAY" \
     --subnet-range "$PROVIDER_NETWORK_CIDR" provider
