@@ -34,7 +34,7 @@ sudo vgcreate cinder-vol1 /dev/$cinder_dev
 conf=/etc/lvm/lvm.conf
 
 echo "Setting LVM filter line in $conf to only allow /dev/$cinder_dev."
-sudo sed -i '0,/# filter = / {s|# filter = .*|filter = [ "a/'$cinder_dev'/" ]|}' $conf
+sudo sed -i '0,/# filter = / {s|# filter = .*\.\*.*|filter = [ "a\|/dev/'$cinder_dev'\|" ]|}' $conf
 
 echo "Verifying LVM filter."
 grep "^[[:space:]]\{1,\}filter" $conf

@@ -38,12 +38,12 @@ read -t 10 -p "========================= 063_setup_neutron_3"; echo
 ./063_setup_neutron_3.sh
 read -t 10 -p "========================= 064_setup_neutron_4"; echo
 ./064_setup_neutron_4.sh
-read -t 10 -p "========================= 071_setup_barbican_1"; echo
-./071_setup_barbican_1.sh
-read -t 10 -p "========================= 072_setup_barbican_2"; echo
-./072_setup_barbican_2.sh
-read -t 10 -p "========================= 073_setup_barbican_3"; echo
-./073_setup_barbican_3.sh
+# read -t 10 -p "========================= 071_setup_barbican_1"; echo
+# ./071_setup_barbican_1.sh
+# read -t 10 -p "========================= 072_setup_barbican_2"; echo
+# ./072_setup_barbican_2.sh
+# read -t 10 -p "========================= 073_setup_barbican_3"; echo
+# ./073_setup_barbican_3.sh
 # read -t 10 -p "========================= 081_setup_trove_1"; echo
 # 081_setup_trove_1.sh
 # read -t 10 -p "========================= 082_setup_trove_2"; echo

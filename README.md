@@ -5,16 +5,16 @@
       enp0s3|10.10.0.11          enp0s3|10.10.0.31          enp0s3|10.10.0.41
 +-----------+-----------+  +-----------+-----------+  +-----------+-----------+
 |     [ controller ]    |  |       [ compute ]     |  |       [ storage ]     |
-|     (Control Node)    |  |      Nova-Compute     |  |      Swift-Container  |
+|     (Control Node)    |  |     Nova-Compute      |  |      Swift-Container  |
 | MariaDB   RabbitMQ    |  |     Swift-Container   |  |      Swift-Account    |
 | Memcached Swift Proxy |  |     Swift-Account     |  |      Swift-Object     |
 | Keystone  httpd       |  |     Swift-Object      |  |      Cinder Volume    |
 +-----------------------+  +-----------------------+  +-----------------------+
-    enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT 
-    enp0s8|Unconfigured        enp0s8|Unconfigured        enp0s8|Unconfigured
-                               sdb                        sdb   |swift
-                               sdc                        sdc   |swift
-                                                          sdd   |cinder
+                                 sdb,sdc (swift)             sdb,sdc (swift)
+                                                             sdd (cinder)
++-----------+-----------+  +-----------+-----------+  +-----------+-----------+
+      enp0s8|Unconfigured        enp0s8|Unconfigured        enp0s8|Unconfigured
+      enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT
 ```
 add Network Interface 네트워크 추가\
 add Storage 10Gb 저장소 추가

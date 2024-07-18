@@ -38,6 +38,7 @@ set_apt_proxy
 
 # Get apt index files
 sudo apt update
+sudo apt install openvswitch-switch-dpdk
 
 # ---------------------------------------------------------------------------
 # Enable the OpenStack repository

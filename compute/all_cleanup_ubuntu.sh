@@ -27,3 +27,4 @@ sudo apt autoremove -y
 
 sudo umount /dev/sdb
 sudo umount /dev/sdc
+sudo sed -i '/\/srv\/node/d' /etc/fstab

@@ -95,6 +95,8 @@ function wait_for_agent {
     )
 }
 
+# prevent alive 'XXX' -> restart service ':-)'
+sudo systemctl restart neutron-l3-agent
 wait_for_agent neutron-l3-agent
 
 echo "linuxbridge-agent and dhcp-agent must be up before we can add interfaces."

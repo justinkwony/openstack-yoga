@@ -19,25 +19,28 @@ unset arch
 CIRROS_IMG_NAME="cirros"
 
 #------------------------------------------------------------------------------
+MGMT_3_OCTET="10.10.0"
+PROV_3_OCTET="192.168.161"
+PRIV_3_OCTET="172.16.1"
 
 # Networks used by OpenStack setup
-NETWORK_0="mgmt 10.10.0.0"
-NETWORK_1="provider 10.10.1.0"
+NETWORK_0="mgmt $MGMT_3_OCTET.0"
+NETWORK_1="provider $PROV_3_OCTET.0"
 
 #------------------------------------------------------------------------------
 
 # Public network
-: ${PROVIDER_NETWORK_CIDR:=10.10.1.0/24}
-: ${PROVIDER_NETWORK_GATEWAY:=10.10.1.1}
+: ${PROVIDER_NETWORK_CIDR:=${PROV_3_OCTET}.0/24}
+: ${PROVIDER_NETWORK_GATEWAY:=${PROV_3_OCTET}.1}
 # Floating IP addresses
-: ${START_IP_ADDRESS:=10.10.1.101}
-: ${END_IP_ADDRESS:=10.10.1.200}
+: ${START_IP_ADDRESS:=${PROV_3_OCTET}.101}
+: ${END_IP_ADDRESS:=${PROV_3_OCTET}.200}
 
 #------------------------------------------------------------------------------
 
 # Private demo network
-: ${SELFSERVICE_NETWORK_CIDR:=172.16.1.0/24}
-: ${SELFSERVICE_NETWORK_GATEWAY:=172.16.1.1}
+: ${SELFSERVICE_NETWORK_CIDR:=${PRIV_3_OCTET}.0/24}
+: ${SELFSERVICE_NETWORK_GATEWAY:=${PRIV_3_OCTET}.1}
 
 # DNS name server used by instance VMs.
 # Default is Google Public DNS (8.8.8.8).

@@ -1,3 +1,6 @@
+sudo systemctl stop tgt
+sudo systemctl stop cinder-volume
+
 sudo apt remove -y --purge python3-wcwidth
 sudo apt remove -y --purge python3-cmd2
 sudo apt remove -y --purge python3-oslo.utils python3-docutils python3-oslo.serialization python3-oslo.context python3-deprecation python3-cliff python3-docutils
@@ -27,3 +30,5 @@ sudo vgremove cinder-vol1 -y
 sudo pvremove /dev/sdd
 sudo umount /dev/sdb
 sudo umount /dev/sdc
+sudo sed -i '/\/srv\/node/d' /etc/fstab
+sudo sed -i '/\/var\/lib\/nfs-share/d' /etc/exports
