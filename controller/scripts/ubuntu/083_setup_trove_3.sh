@@ -71,7 +71,7 @@ iniset_sudo $conf DEFAULT control_exchange trove
 iniset_sudo $conf DEFAULT reboot_time_out 300
 iniset_sudo $conf DEFAULT usage_timeout 900
 iniset_sudo $conf DEFAULT agent_call_high_timeout 1200
-iniset_sudo $conf DEFAULT  use_syslog False
+iniset_sudo $conf DEFAULT use_syslog False
 
 
 echo "Configuring keystone."

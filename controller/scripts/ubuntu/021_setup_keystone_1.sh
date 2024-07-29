@@ -20,4 +20,3 @@ indicate_current_auto
 echo "Installing keystone."
 sudo apt-get -y -o DPkg::options::=--force-confmiss --reinstall install apache2
 sudo apt-get -y -o DPkg::options::=--force-confmiss --reinstall install keystone-common keystone
-

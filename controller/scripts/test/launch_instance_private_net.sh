@@ -622,7 +622,7 @@ while : ; do
             show_compute_resource_usage
             echo "Restarting openstack-nova-compute on compute node."
             ssh_no_chk_node compute \
-                sudo systemctl restart  openstack-nova-compute
+                sudo systemctl restart openstack-nova-compute
             echo "SUM ERROR openstack-nova-compute restart (RetryFilter)"
         fi
 

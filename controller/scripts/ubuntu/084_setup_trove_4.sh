@@ -94,11 +94,11 @@ sudo su -s /bin/bash trove -c "trove-manage db_load_datastore_config_parameters 
 openstack datastore list
 
 #------------------------------------------------------------------------------
-# Verifying Database Versions for  MariaDB, MySQL and PostgreSQL
+# Verifying Database Versions for MariaDB, MySQL and PostgreSQL
 #------------------------------------------------------------------------------
 
-# Verifying Database Versions for  MariaDB, MySQL and PostgreSQL
-echo "Verifying Database Versions for  MariaDB, MySQL and PostgreSQL"
+# Verifying Database Versions for MariaDB, MySQL and PostgreSQL
+echo "Verifying Database Versions for MariaDB, MySQL and PostgreSQL"
 echo "MariaDB.."
 
 openstack datastore version list mariadb
@@ -107,7 +107,7 @@ echo "Verifying Database Versions for MySQL"
 echo "MySQL.."
 
 openstack datastore version list mysql
-echo "Verifying Database Versions for  PostgreSQL"
+echo "Verifying Database Versions for PostgreSQL"
 echo "PostgresSQL.."
 
 openstack datastore version list postgresql

@@ -99,8 +99,8 @@ sudo sed -i --follow-symlinks '/WSGIDaemonProcess/ s/processes=[0-9]*/processes=
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo "Restarting apache."
-sudo systemctl restart  apache2
-sudo systemctl enable  apache2
+sudo systemctl restart apache2
+sudo systemctl enable apache2
 
 # Set environment variables for authentication
 export OS_USERNAME=$ADMIN_USER_NAME

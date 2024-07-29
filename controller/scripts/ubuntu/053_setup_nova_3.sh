@@ -115,7 +115,7 @@ fi
 echo "Config: $(sudo grep virt_type $conf)"
 
 echo "Restarting nova services."
-sudo systemctl restart  nova-compute
+sudo systemctl restart nova-compute
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Add the compute node to the cell database

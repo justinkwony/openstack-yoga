@@ -96,7 +96,7 @@ iniset_sudo $conf keystone_authtoken auth_url http://controller:5000
 iniset_sudo $conf keystone_authtoken memcached_servers controller:11211
 
 # Prevent error "inequivalent arg 'durable' for exchange 'openstack'"
-iniset_sudo $conf oslo_messaging_rabbit  amqp_durable_queues False
+iniset_sudo $conf oslo_messaging_rabbit amqp_durable_queues False
 
 # Listen for keystone events (such as project deletion) that are relevant
 # for barbican.

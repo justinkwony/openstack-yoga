@@ -29,4 +29,3 @@ echo "Restarting memcache service and verify."
 sudo systemctl restart memcached
 sudo systemctl enable memcached
 sudo systemctl status memcached
-

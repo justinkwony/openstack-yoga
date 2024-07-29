@@ -121,7 +121,7 @@ sudo systemctl start swift-proxy.service memcached.service
 
 for ringtype in account container object; do 
    node_ssh compute sudo systemctl start swift-$ringtype
-   node_ssh compute  sudo systemctl enable swift-$ringtype
+   node_ssh compute sudo systemctl enable swift-$ringtype
     for service in replicator updater auditor; do
         if [ $ringtype != 'account' ] || [ $service != 'updater' ]; then
           node_ssh compute sudo systemctl start swift-$ringtype-$service

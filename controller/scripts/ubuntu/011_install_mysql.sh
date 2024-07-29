@@ -66,7 +66,7 @@ iniset_sudo $conf mysqld character-set-server utf8
 
 echo "Restarting MySQL service."
 
-sudo systemctl restart  mysql
-sudo systemctl enable  mysql
-sudo systemctl status  mysql
+sudo systemctl restart mysql
+sudo systemctl enable mysql
+sudo systemctl status mysql
 

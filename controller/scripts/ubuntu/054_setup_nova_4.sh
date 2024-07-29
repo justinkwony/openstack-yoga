@@ -17,7 +17,7 @@ placement_admin_user=placement
 nova_admin_user=nova
 
 echo "Restarting nova services."
-sudo systemctl restart  nova-compute
+sudo systemctl restart nova-compute
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Add the compute node to the cell database

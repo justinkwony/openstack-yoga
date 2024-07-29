@@ -616,7 +616,7 @@ while : ; do
             show_compute_resource_usage
             echo "Restarting nova-compute on compute node."
             ssh_no_chk_node compute \
-                sudo systemctl restart  nova-compute
+                sudo systemctl restart nova-compute
             echo "SUM ERROR nova-compute restart (RetryFilter)"
         fi
 

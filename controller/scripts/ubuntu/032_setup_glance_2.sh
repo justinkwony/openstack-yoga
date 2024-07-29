@@ -106,7 +106,7 @@ sudo glance-manage db_sync
 
 echo "Restarting glance service."
 sudo systemctl restart glance-api
-sudo systemctl enable  glance-api
+sudo systemctl enable glance-api
 
 #------------------------------------------------------------------------------
 # Verify the Image Service installation
