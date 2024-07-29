@@ -38,7 +38,7 @@ set_apt_proxy
 
 # Get apt index files
 sudo apt update
-sudo apt install openvswitch-switch-dpdk
+sudo apt install openvswitch-switch
 
 # ---------------------------------------------------------------------------
 # Enable the OpenStack repository
@@ -62,43 +62,20 @@ case "$OPENSTACK_RELEASE" in
         ;;
 esac
 
-# skip cloud-archive:yoga, ubuntu 22.04.4
-##echo "Adding cloud repo: $REPO"
-##sudo add-apt-repository "$REPO"
-
-# Get index files only for ubuntu-cloud repo but keep standard lists
-##if [ -f "/etc/apt/sources.list.d/$SRC_FILE" ]; then
-##    sudo apt update \
-##        -o Dir::Etc::sourcelist="sources.list.d/$SRC_FILE" \
-##        -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
-##else
-##    echo "ERROR: apt source not found: /etc/apt/sources.list.d/$SRC_FILE"
-##    exit 1
-##fi
+## # skip cloud-archive:yoga, ubuntu 22.04.4
+## echo "Adding cloud repo: $REPO"
+## sudo add-apt-repository "$REPO"
+##
+## # Get index files only for ubuntu-cloud repo but keep standard lists
+## if [ -f "/etc/apt/sources.list.d/$SRC_FILE" ]; then
+##     sudo apt update \
+##         -o Dir::Etc::sourcelist="sources.list.d/$SRC_FILE" \
+##         -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+## else
+##     echo "ERROR: apt source not found: /etc/apt/sources.list.d/$SRC_FILE"
+##     exit 1
+## fi
 
 # Disable automatic updates
 sudo systemctl disable apt-daily.service
 sudo systemctl disable apt-daily.timer
-
-# ---------------------------------------------------------------------------
-# Install mariadb-server from upstream repo (mariadb 10.5 shipping)
-# ---------------------------------------------------------------------------
-
-# Add mariadb repo
-#cat << EOF | sudo tee /etc/apt/sources.list.d/mariadb.list
-#deb http://mariadb.mirror.globo.tech/repo/10.5/ubuntu focal main 
-#EOF
-
-# Import key required for mariadb
-#sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' 
-
-# Update apt database for mariadb repo
-#sudo apt update \
-#    -o Dir::Etc::sourcelist="sources.list.d/mariadb.list" \
-#    -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
-
-# Pre-configure database root password in /var/cache/debconf/passwords.dat
-
-source "$CONFIG_DIR/credentials"
-echo "mysql-server mysql-server/root_password password $DATABASE_PASSWORD" | sudo debconf-set-selections
-echo "mysql-server mysql-server/root_password_again password $DATABASE_PASSWORD" | sudo debconf-set-selections
