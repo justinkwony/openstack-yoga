@@ -12,7 +12,7 @@ sudo apt remove -y --purge cinder-api cinder-scheduler
 sudo apt remove -y --purge cinder-scheduler
 sudo apt remove -y --purge swift
 sudo apt remove -y --purge swift-account
-sudo apt remove -y --purge python3-swift python3-swiftclient  nova-api nova-conductor nova-novncproxy nova-scheduler
+sudo apt remove -y --purge python3-swift python3-swiftclient nova-api nova-conductor nova-novncproxy nova-scheduler
 sudo rm -rf /etc/cinder/ /etc/neutron/ /var/lib/cinder/ /var/lib/neutron/ /var/lib/openvswitch/ /etc/sysconfig/openstack-nova-novncproxy \
         /etc/swift/ /var/log/swift/
 

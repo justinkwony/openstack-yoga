@@ -16,9 +16,31 @@ indicate_current_auto
 # Controller setup
 #-------------------------------------------------------------------------------
 
-
 DB_IP=$(get_node_ip_in_network "$(hostname)" "mgmt")
 echo "Will bind MySQL server to $DB_IP."
+
+# ---------------------------------------------------------------------------
+# Install mariadb-server from upstream repo (mariadb 10.5 shipping)
+# ---------------------------------------------------------------------------
+
+# Add mariadb repo
+#cat << EOF | sudo tee /etc/apt/sources.list.d/mariadb.list
+#deb http://mariadb.mirror.globo.tech/repo/10.5/ubuntu focal main 
+#EOF
+
+# Import key required for mariadb
+#sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' 
+
+# Update apt database for mariadb repo
+#sudo apt update \
+#    -o Dir::Etc::sourcelist="sources.list.d/mariadb.list" \
+#    -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+
+# Pre-configure database root password in /var/cache/debconf/passwords.dat
+
+source "$CONFIG_DIR/credentials"
+echo "mysql-server mysql-server/root_password password $DATABASE_PASSWORD" | sudo debconf-set-selections
+echo "mysql-server mysql-server/root_password_again password $DATABASE_PASSWORD" | sudo debconf-set-selections
 
 #------------------------------------------------------------------------------
 # Install and configure the database server
