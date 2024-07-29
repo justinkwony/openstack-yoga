@@ -22,12 +22,6 @@ bind_port = 6200
 # feature.
 # servers_per_port = 0
 #
-# If running in a container, servers_per_port may not be able to use the
-# bind_ip to lookup the ports in the ring.  You may instead override the port
-# lookup in the ring using the ring_ip.  Any devices/ports associted with the
-# ring_ip will be used when listening on the configured bind_ip address.
-# ring_ip = <bind_ip>
-#
 # Maximum concurrent requests per worker
 # max_clients = 1024
 #
@@ -117,7 +111,7 @@ bind_port = 6200
 # ionice_priority =
 
 [pipeline:main]
-pipeline = healthcheck recon backend_ratelimit object-server
+pipeline = healthcheck recon object-server
 
 [app:object-server]
 use = egg:swift#object
@@ -142,17 +136,6 @@ use = egg:swift#object
 # If true, objects for authenticated GET requests may be kept in buffer cache
 # if small enough
 # keep_cache_private = false
-#
-# If true, SLO object's manifest file for GET requests may be kept in buffer cache
-# if smaller than 'keep_cache_size'. And this config will only matter when
-# 'keep_cache_private' is false.
-# keep_cache_slo_manifest = false
-#
-# cooperative_period defines how frequent object server GET request will
-# perform the cooperative yielding during iterating the disk chunks. For
-# example, value of '5' will insert one sleep() after every 5 disk_chunk_size
-# chunk reads. A value of '0' (the default) will turn off cooperative yielding.
-# cooperative_period = 0
 #
 # on PUTs, sync data every n MB
 # mb_per_sync = 512
@@ -248,20 +231,6 @@ use = egg:swift#recon
 #recon_cache_path = /var/cache/swift
 #recon_lock_path = /var/lock
 
-[filter:backend_ratelimit]
-use = egg:swift#backend_ratelimit
-# Config options can optionally be loaded from a separate config file. Config
-# options in this section will be used unless the same option is found in the
-# config file, in which case the config file option will be used. See the
-# backend-ratelimit.conf-sample file for details of available config options.
-# backend_ratelimit_conf_path = /etc/swift/backend-ratelimit.conf
-
-# The minimum interval between attempts to reload any config file at
-# backend_ratelimit_conf_path while the server is running. A value of 0 means
-# that the file is loaded at start-up but not subsequently reloaded. Note that
-# config options in this section are never reloaded after start-up.
-# config_reload_interval = 60
-
 [object-replicator]
 # You can override the default log routing for this app here (don't use set!):
 # log_name = object-replicator
@@ -294,11 +263,10 @@ use = egg:swift#backend_ratelimit
 # max duration of a partition rsync
 # rsync_timeout = 900
 #
-# bandwidth limit for rsync in kB/s. 0 means unlimited. rsync 3.2.2 and later
-# accept suffixed values like 10M or 1.5G; see the --bwlimit option for rsync(1)
+# bandwidth limit for rsync in kB/s. 0 means unlimited
 # rsync_bwlimit = 0
 #
-# passed to rsync for both io op timeout and connection timeout
+# passed to rsync for io op timeout
 # rsync_io_timeout = 30
 #
 # Allow rsync to compress data which is transmitted to destination node
@@ -322,13 +290,6 @@ use = egg:swift#backend_ratelimit
 #
 # ring_check_interval = 15.0
 # recon_cache_path = /var/cache/swift
-#
-# By default, per-file rsync transfers are logged at debug if successful and
-# error on failure. During large rebalances (which both increase the number
-# of diskfiles transferred and increases the likelihood of failures), this
-# can overwhelm log aggregation while providing little useful insights.
-# Change this to false to disable per-file logging.
-# log_rsync_transfers = true
 #
 # limits how long rsync error log lines are
 # 0 means to log the entire line
@@ -694,32 +655,10 @@ use = egg:swift#backend_ratelimit
 # ionice_class =
 # ionice_priority =
 #
-# The expirer can delay the reaping of expired objects on disk (and in
-# container listings) with an account level or container level delay_reaping
-# time.
-# After the delay_reaping time has passed objects will be reaped as normal.
-# You may configure this delay_reaping value in seconds with dynamic config
-# option names prefixed with delay_reaping_<ACCT> for account level delays
-# and delay_reaping_<ACCT>/<CNTR> for container level delays.
-# Special characters in <ACCT> or <CNTR> should be quoted.
-# The delay_reaping value should be a float value greater than or equal to
-# zero.
-# A container level delay_reaping does not require an account level
-# delay_reaping but overrides the account level delay_reaping for the same
-# account if it exists.
-# For example:
-# delay_reaping_AUTH_test = 300.0
-# delay_reaping_AUTH_test2 = 86400.0
-# delay_reaping_AUTH_test/test = 400.0
-# delay_reaping_AUTH_test/test2 = 600.0
-# delay_reaping_AUTH_test/special%0Achars%3Dshould%20be%20quoted
-# N.B. By default no delay_reaping value is configured for any accounts or
-# containers.
-
-[filter:xprofile]
-use = egg:swift#xprofile
 # Note: Put it at the beginning of the pipleline to profile all middleware. But
 # it is safer to put this after healthcheck.
+[filter:xprofile]
+use = egg:swift#xprofile
 # This option enable you to switch profilers which should inherit from python
 # standard profiler. Currently the supported value can be 'cProfile',
 # 'eventlet.green.profile' etc.

@@ -85,13 +85,7 @@ bind_port = 8080
 # CORS documentation).
 # cors_expose_headers =
 #
-# General timeout when sending to or receiving from clients.
 # client_timeout = 60.0
-#
-# Timeout to use when looking for pipelined requests. Set to zero to disable
-# request pipelining. Defaults to client_timeout. Requires eventlet>=0.33.4;
-# with earlier eventlet, any non-zero value is treated as client_timeout.
-# keepalive_timeout =
 #
 # Note: enabling evenlet_debug might reveal sensitive information, for example
 # signatures for temp urls
@@ -159,10 +153,8 @@ use = egg:swift#proxy
 # data is present in memcache, we can periodically refresh the data in memcache
 # without causing a thundering herd. Values around 0.0 - 0.1 (i.e., one in
 # every thousand requests skips cache, or fewer) are recommended.
-# container_existence_skip_cache_pct = 0.0
 # container_updating_shard_ranges_skip_cache_pct = 0.0
 # container_listing_shard_ranges_skip_cache_pct = 0.0
-# account_existence_skip_cache_pct = 0.0
 #
 # object_chunk_size = 65536
 # client_chunk_size = 65536
@@ -175,7 +167,6 @@ use = egg:swift#proxy
 # Timeouts from these requests can be recovered from so setting this to
 # something lower than node_timeout would provide quicker error recovery
 # while allowing for a longer timeout for non-recoverable requests (PUTs).
-# Does not apply to requests with a truthy X-Newest header value.
 # Defaults to node_timeout, should be overridden if node_timeout is set to a
 # high number to prevent client timeouts from firing before the proxy server
 # has a chance to retry.
@@ -339,14 +330,6 @@ use = egg:swift#proxy
 # the environment (default). For more information, see
 # https://bugs.launchpad.net/liberasurecode/+bug/1886088
 # write_legacy_ec_crc =
-#
-# Setting 'allow_open_expired' to 'true' allows the 'x-open-expired' header
-# to be used with HEAD, GET, or POST requests to access expired objects that
-# have not yet been deleted from disk. This can be useful in conjunction with
-# the object-expirer 'delay_reaping' feature.
-# This flag is set to false by default, so it must be changed to access
-# expired objects.
-# allow_open_expired = false
 
 # Some proxy-server configuration options may be overridden on a per-policy
 # basis by including per-policy config section(s). The value of any option
@@ -757,6 +740,18 @@ use = egg:swift#memcache
 # follow rfc3986 section-3.2.2, i.e. [::1]:11211)
 # memcache_servers = 127.0.0.1:11211
 #
+# Sets how memcache values are serialized and deserialized:
+# 0 = older, insecure pickle serialization
+# 1 = json serialization but pickles can still be read (still insecure)
+# 2 = json serialization only (secure and the default)
+# If not set here, the value for memcache_serialization_support will be read
+# from /etc/swift/memcache.conf (see memcache.conf-sample).
+# To avoid an instant full cache flush, existing installations should
+# upgrade with 0, then set to 1 and reload, then after some time (24 hours)
+# set to 2 and reload.
+# In the future, the ability to use pickle serialization will be removed.
+# memcache_serialization_support = 2
+#
 # Sets the maximum number of connections to each memcached server per worker
 # memcache_max_connections = 2
 #
@@ -929,7 +924,7 @@ use = egg:swift#tempurl
 # list of header names and names can optionally end with '*' to indicate a
 # prefix match. incoming_allow_headers is a list of exceptions to these
 # removals.
-# incoming_remove_headers = x-timestamp x-open-expired
+# incoming_remove_headers = x-timestamp
 #
 # The headers allowed as exceptions to incoming_remove_headers. Simply a
 # whitespace delimited list of header names and names can optionally end with
@@ -954,9 +949,6 @@ use = egg:swift#tempurl
 # Note: Put formpost just before your auth filter(s) in the pipeline
 [filter:formpost]
 use = egg:swift#formpost
-# The digest algorithm(s) supported for generating signatures;
-# whitespace-delimited.
-# allowed_digests = sha1 sha256 sha512
 
 # Note: Just needs to be placed before the proxy-server in the pipeline.
 [filter:name_check]
@@ -1040,8 +1032,7 @@ use = egg:swift#proxy_logging
 # log_anonymization_salt =
 #
 # Template used to format access logs. All words surrounded by curly brackets
-# will be substituted with the appropriate values. For more information, see
-# https://docs.openstack.org/swift/latest/logs.html
+# will be substituted with the appropriate values
 # log_msg_template = {client_ip} {remote_addr} {end_time.datetime} {method} {path} {protocol} {status_int} {referer} {user_agent} {auth_token} {bytes_recvd} {bytes_sent} {client_etag} {transaction_id} {headers} {request_time} {source} {log_info} {start_time} {end_time} {policy_index}
 
 # Note: Put before both ratelimit and auth in the pipeline.
@@ -1112,7 +1103,7 @@ use = egg:swift#slo
 # `?multipart-manifest=delete&async=on`. You may want to keep this off if it
 # negatively impacts your expirers; in that case, the deletes will still
 # be done as part of the client request.
-# allow_async_delete = true
+# allow_async_delete = false
 
 # Note: Put after auth and staticweb in the pipeline.
 # If you don't put it in the pipeline, it will be inserted for you.
@@ -1129,11 +1120,11 @@ use = egg:swift#dlo
 # Time limit on GET requests (seconds)
 # max_get_time = 86400
 
-# Note: Put after auth and server-side copy in the pipeline.
+# Note: Put after auth in the pipeline.
 [filter:container-quotas]
 use = egg:swift#container_quotas
 
-# Note: Put after auth and server-side copy in the pipeline.
+# Note: Put after auth in the pipeline.
 [filter:account-quotas]
 use = egg:swift#account_quotas
 

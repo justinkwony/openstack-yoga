@@ -86,7 +86,7 @@ bind_port = 6201
 # ionice_priority =
 
 [pipeline:main]
-pipeline = healthcheck recon backend_ratelimit container-server
+pipeline = healthcheck recon container-server
 
 [app:container-server]
 use = egg:swift#container
@@ -137,20 +137,6 @@ use = egg:swift#healthcheck
 [filter:recon]
 use = egg:swift#recon
 #recon_cache_path = /var/cache/swift
-
-[filter:backend_ratelimit]
-use = egg:swift#backend_ratelimit
-# Config options can optionally be loaded from a separate config file. Config
-# options in this section will be used unless the same option is found in the
-# config file, in which case the config file option will be used. See the
-# backend-ratelimit.conf-sample file for details of available config options.
-# backend_ratelimit_conf_path = /etc/swift/backend-ratelimit.conf
-
-# The minimum interval between attempts to reload any config file at
-# backend_ratelimit_conf_path while the server is running. A value of 0 means
-# that the file is loaded at start-up but not subsequently reloaded. Note that
-# config options in this section are never reloaded after start-up.
-# config_reload_interval = 60
 
 [container-replicator]
 # You can override the default log routing for this app here (don't use set!):
@@ -211,8 +197,8 @@ use = egg:swift#backend_ratelimit
 # ionice_class =
 # ionice_priority =
 #
-# The handoffs_only and handoff_delete options are for special-case emergency
-# situations such as full disks in the cluster. These options SHOULD NOT
+# The handoffs_only mode option is for special-case emergency
+# situations such as full disks in the cluster. This option SHOULD NOT
 # BE ENABLED except in emergencies. When handoffs_only mode is enabled
 # the replicator will *only* replicate from handoff nodes to primary
 # nodes and will not sync primary nodes with other primary nodes.
@@ -229,15 +215,6 @@ use = egg:swift#backend_ratelimit
 # long-term use.
 #
 # handoffs_only = no
-#
-# handoff_delete is the number of replicas which are ensured in swift.
-# If the number less than the number of replicas is set, container-replicator
-# could delete local handoffs even if all replicas are not ensured in the
-# cluster. The replicator would remove local handoff container database after
-# syncing when the number of successful responses is greater than or equal to
-# this number. By default(auto), handoff partitions will be
-# removed  when it has successfully replicated to all the canonical nodes.
-# handoff_delete = auto
 
 [container-updater]
 # You can override the default log routing for this app here (don't use set!):
@@ -508,18 +485,6 @@ use = egg:swift#xprofile
 # reclaim_age, so this parameter should be less than or equal to reclaim_age.
 # The default is 12 hours (12 x 60 x 60)
 # recon_sharded_timeout = 43200
-#
-# Maximum amount of time in seconds after sharding has been started on a shard
-# container and before it's considered as timeout. After this amount of time,
-# sharder will warn that a container DB has not completed sharding.
-# The default is 48 hours (48 x 60 x 60)
-# container_sharding_timeout = 172800
-#
-# Some sharder states lead to repeated messages of 'Reclaimable db stuck
-# waiting for shrinking' on every sharder cycle. To reduce noise in logs,
-# this message will be suppressed for some time after its last emission.
-# Default is 24 hours.
-# periodic_warnings_interval = 86400
 #
 # Large databases tend to take a while to work with, but we want to make sure
 # we write down our progress. Use a larger-than-normal broker timeout to make
