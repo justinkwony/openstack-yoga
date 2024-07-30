@@ -36,7 +36,8 @@ wait_for_neutron
 
 (
 echo "Sourcing the demo credentials."
-source "$CONFIG_DIR/demo-openstackrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
+# source "$CONFIG_DIR/demo-openstackrc.sh"
 
 echo "Creating the private network."
 openstack network create selfservice
@@ -72,7 +73,8 @@ sudo brctl show
 
 (
 echo "Sourcing the demo credentials."
-source "$CONFIG_DIR/demo-openstackrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
+# source "$CONFIG_DIR/demo-openstackrc.sh"
 
 echo "Creating a router."
 openstack router create router
@@ -105,7 +107,8 @@ wait_for_agent neutron-dhcp-agent
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 (
-source "$CONFIG_DIR/demo-openstackrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
+# source "$CONFIG_DIR/demo-openstackrc.sh"
 
 echo "Adding the private network subnet as an interface on the router."
 openstack router add subnet router selfservice
@@ -132,7 +135,8 @@ done
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 (
-source "$CONFIG_DIR/demo-openstackrc.sh"
+source "$CONFIG_DIR/admin-openstackrc.sh"
+# source "$CONFIG_DIR/demo-openstackrc.sh"
 
 echo "Setting a gateway on the public network on the router."
 openstack router set router --external-gateway provider
