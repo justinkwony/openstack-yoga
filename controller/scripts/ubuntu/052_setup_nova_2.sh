@@ -162,8 +162,7 @@ wait_for_keystone
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo "Restarting nova services."
-declare -a nova_services=(nova-api nova-scheduler nova-conductor \
-    nova-novncproxy)
+declare -a nova_services=(nova-api nova-scheduler nova-conductor nova-novncproxy)
 
 for nova_service in "${nova_services[@]}"; do
     echo "Restarting $nova_service."
