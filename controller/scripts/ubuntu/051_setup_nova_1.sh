@@ -18,4 +18,3 @@ indicate_current_auto
 
 echo "Installing nova for controller node."
 sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall nova-common nova-api nova-conductor nova-novncproxy nova-scheduler
-

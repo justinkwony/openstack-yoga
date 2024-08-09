@@ -18,7 +18,4 @@ indicate_current_auto
 #------------------------------------------------------------------------------
 
 echo "Installing nova for compute node."
-# sudo apt install -y -o Dpkg::Options::="--force-confdef" python3-openstackclient
-sudo apt install -y --reinstall -o DPkg::options::=--force-confmiss nova-common nova-compute 
-sudo apt install -y --reinstall -o DPkg::options::=--force-confmiss nova-compute-qemu
-
+sudo apt install -y --reinstall -o DPkg::options::=--force-confmiss nova-common nova-compute nova-compute-qemu

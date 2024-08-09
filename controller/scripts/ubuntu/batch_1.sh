@@ -58,8 +58,8 @@ read -t 10 -p "========================= 101_setup_heat_1"; echo
 ./101_setup_heat_1.sh
 read -t 10 -p "========================= 102_setup_heat_2"; echo
 ./102_setup_heat_2.sh
-read -t 10 -p "========================= 111_setup_cinder_1"; echo
-./111_setup_cinder_1.sh
-read -t 10 -p "========================= 112_setup_cinder_2"; echo
-./112_setup_cinder_2.sh
+# read -t 10 -p "========================= 111_setup_cinder_1"; echo
+# ./111_setup_cinder_1.sh
+# read -t 10 -p "========================= 112_setup_cinder_2"; echo
+# ./112_setup_cinder_2.sh
 echo "========================= continue on storage, compute node"; echo
