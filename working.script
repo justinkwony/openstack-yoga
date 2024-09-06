@@ -1,0 +1,211 @@
+source ~/config/admin-openstackrc.sh
+
+openstack network create --share --external --provider-physical-network provider --provider-network-type flat provider
+openstack subnet create --network provider --allocation-pool start="192.168.0.151,end=192.168.0.200" --dns-nameserver "168.126.63.1" --dns-nameserver "168.126.63.2" --gateway "192.168.0.1" --subnet-range "192.168.0.0/24" provider
+#openstack subnet create --network provider --allocation-pool start="192.168.200.151,end=192.168.200.200" --dns-nameserver "121.88.255.50" --dns-nameserver "121.88.255.49" --gateway "192.168.200.254" --subnet-range "192.168.200.0/24" provider
+openstack subnet delete provider;openstack network delete provider
+
+openstack network create --share --external --provider-physical-network in_net_1 --provider-network-type flat in_net_1
+openstack subnet create --network in_net_1 --allocation-pool start="192.168.1.100,end=192.168.1.200" --gateway "192.168.1.1" --subnet-range "192.168.1.0/24" in_net_1
+openstack subnet delete in_net_1;openstack network delete in_net_1
+
+openstack network create ap_net
+#openstack subnet create --network ap_net --gateway "172.16.1.1" --subnet-range "172.16.1.0/24" ap_net
+openstack subnet create --network ap_net --gateway "172.16.1.1" --subnet-range "172.16.1.0/24" --host-route "destination=172.16.2.0/24,gateway=172.16.1.3" ap_net
+openstack subnet delete ap_net;openstack network delete ap_net
+
+openstack network create db_net
+#openstack subnet create --network db_net --gateway "172.16.2.1" --subnet-range "172.16.2.0/24" db_net
+openstack subnet create --network db_net --gateway "172.16.2.1" --subnet-range "172.16.2.0/24" --host-route "destination=172.16.1.0/24,gateway=172.16.2.3" db_net
+openstack subnet delete db_net;openstack network delete db_net
+
+openstack network create selfservice
+openstack subnet create --network selfservice --gateway "172.16.1.1" --subnet-range "172.16.1.0/24" selfservice
+openstack subnet delete selfservice;openstack network delete selfservice
+
+
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="e1e9d71f-3c70-4751-9c1f-1de8d6296447",v4-fixed-ip="172.16.1.11" --user-data user-data.cfg --availability-zone nova:compute --wait "ap1"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="a3e6174b-d846-4f0a-89f5-4adcd013c472",v4-fixed-ip="172.16.2.11" --user-data user-data.cfg --availability-zone nova:compute2 --wait "db1"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="e1e9d71f-3c70-4751-9c1f-1de8d6296447",v4-fixed-ip="172.16.1.11" --security-group sg_base --user-data user-data.cfg --availability-zone nova:compute --wait "ap1"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="a3e6174b-d846-4f0a-89f5-4adcd013c472",v4-fixed-ip="172.16.2.11" --security-group sg_base --user-data user-data.cfg --availability-zone nova:compute2 --wait "db1"
+
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="c8bce85c-fbcc-4248-867c-ac5d4ce9ec3a",v4-fixed-ip="192.168.1.11" --user-data user-data.cfg --availability-zone nova:compute --wait "bastion"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network provider --user-data ~/user-data.cfg --availability-zone nova:compute --wait "bastion"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network in_net_1 --user-data ~/user-data.cfg --availability-zone nova:compute --wait "bastion"
+
+cat user-data.cfg
+#cloud-config
+user: ubuntu
+chpasswd:
+  list: |
+    root:ubuntu
+    ubuntu:ubuntu
+  expire: False
+ssh_pwauth: True
+timezone: Asia/Seoul
+
+
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.origin
+sudo sed -i 's/deb http:\/\/kr.archive.ubuntu.com\/ubuntu/deb http:\/\/10.10.0.9:8081\/repository\/jammy-proxy/' /etc/apt/sources.list
+sudo sed -i 's/deb http:\/\/archive.ubuntu.com\/ubuntu/deb http:\/\/10.10.0.9:8081\/repository\/jammy-proxy/' /etc/apt/sources.list
+sudo sed -i 's/deb http:\/\/security.ubuntu.com\/ubuntu/deb http:\/\/192.168.1.9:8081\/repository\/jammy-security-proxy/' /etc/apt/sources.list
+cat /etc/apt/sources.list
+
+
+#controller
+sudo systemctl restart nova-api
+sudo systemctl restart neutron-server
+sudo systemctl restart neutron-linuxbridge-agent
+sudo systemctl restart neutron-dhcp-agent
+sudo systemctl restart neutron-metadata-agent
+sudo systemctl restart neutron-l3-agent
+#compute
+sudo systemctl restart nova-compute
+sudo systemctl restart neutron-linuxbridge-agent
+
+
+
+## volume delete
+openstack volume set --state available 4d18d59e-c7d4-4991-b6bd-385011d05c6e
+openstack volume set --detached 4d18d59e-c7d4-4991-b6bd-385011d05c6e
+openstack volume delete 4d18d59e-c7d4-4991-b6bd-385011d05c6e
+
+openstack server create \
+--flavor test \
+--image "Ubuntu 22.04" \
+--network in_net_1 \
+--nic net-id="db1c8a60-ac14-4199-aef1-2c7d44b43188",v4-fixed-ip="192.168.1.199" \
+--password ubuntu \
+--security-group sg_base \
+--key-name ubuntu \
+"ubuntu-test"
+
+openstack port create --network in_net_1 --fixed-ip subnet=in_net_1,ip-address=192.168.1.200 server-port200
+
+openstack server create \
+--flavor test \
+--image "Ubuntu 22.04" \
+--port server-port200 \
+--password ubuntu \
+--security-group sg_base \
+--key-name ubuntu \
+"ubuntu-test"
+
+openstack server create \
+--flavor test \
+--image "Ubuntu 22.04" \
+--nic net-id="db1c8a60-ac14-4199-aef1-2c7d44b43188",v4-fixed-ip="192.168.1.199" \
+--security-group sg_base \
+--key-name ubuntu \
+"ubuntu-test"
+
+network:
+  version: 1
+  config:
+    - type: physical
+      name: eth0
+      subnets:
+        - type: static
+          address: 192.168.1.199
+          gateway: 192.168.1.1
+
+sudo ovs-vsctl add-br br-provider
+sudo ovs-vsctl add-port br-provider enp0s8
+sudo ovs-vsctl add-br br-in_net_1
+sudo ovs-vsctl add-port br-in_net_1 enp0s9
+
+
+
+
+
+
+
+
+
+
+
+
+# The provider network interface
+auto enp0s8
+iface enp0s8 inet manual
+up ip link set dev $IFACE up
+down ip link set dev $IFACE down
+# The provider network interface
+auto enp0s9
+iface enp0s9 inet manual
+up ip link set dev $IFACE up
+down ip link set dev $IFACE down
+
+
+
+apt install nova-compute
+apt install python3-openstackclient
+
+apt install mariadb-server python3-pymysql
+
+/etc/mysql/mariadb.conf.d/99-openstack.cnf
+[mysqld]
+bind-address = 10.0.0.11
+
+default-storage-engine = innodb
+innodb_file_per_table = on
+max_connections = 4096
+collation-server = utf8_general_ci
+character-set-server = utf8
+
+service mysql restart
+
+mysql_secure_installation
+
+apt install rabbitmq-server
+
+rabbitmqctl add_user openstack rabbitPass
+
+rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+
+apt install memcached python3-memcache
+sudo sed -i "s/^-l 127.0.0.1/-l 10.10.0.11/" /etc/memcached.conf
+service memcached restart
+
+apt install etcd
+
+sudo systemctl enable etcd
+sudo systemctl start etcd
+
+apt install keystone
+
+
+
+
+
+
+ubuntu.pem
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAtnJAQdHQ+ew2dISbxenNkMLtYgJTsvQvx0ziUTYxJosH8yrr
+3YAIeR3BY8v0aCDaks3M0MZq2GLoCjnW75YfWW9JwxqOGSnqrfm/ewnap1/cuGZQ
+EdaC/6dLFLwp0Jx7nFspEnnIpYMpRoNt8j2Rc9IK5lmalmif0AXlxRyi3Lt5m82d
+fJ+5vVMm/msSeI3BwijIx1CK2r5bh7sGvO7xqArgyoUI3vDnK3zexYDg958KL+mv
+l8OPfsjN3pPD4UMDGxNCTyI+T3vyoohmHstcni+1q4GVp/wR5c217RggmCN6ijcT
+LNfNXaU9kmeqeR+i1qlaujWU41Mi89IMhrhzgQIDAQABAoIBAADb+FRRB1AWhB4D
+zf6iWIpohxz+lh+kG5Wfjaswj04jUm17WbyXis6seJu6XyWGhlYBue+/p/saeeWa
+rrHem/mgMvWULmg1Hry8lemvxunB82qDSZgwaZn38xQrI9KmmoTOt3qFtB+ers0N
+H1loP6MnKY/Kuy4POoW0oeeuCCC0T6s+Zt8glp3SKgmcG+q+ZFbpy+q3cS5zC4hO
+Eo3vyPij22n+Tcw8QyjvjZTgjgYFpMcUCWg9x27eMTJrgIgVvjeMv+LaG+qtXGrz
+tX8K5H3KePg57akvrs/EpacY0a9AosujQhf98ksFEZnFrey6TTx9vn3nVUterncB
+0J9qluECgYEAzZqdaTFSXRT/qEIpbRfacQnVgE7zdkdDFKMOCkURpcuP6HiJXDpc
+ukNvh/LCZuvs9vnt0werl7gbdGc7+r5J7C8ARWMyZZuZPWtZHANvCu1COYInA0l3
+71nFGJXVU4SYH4gNYat83jeXEdBA0kaodLuugzTaQDwR8WFdds2K8WECgYEA4yqF
+nV7ndFGg0xTG8zr3NJQHoyzS1hkcysNPGGavDknYNPb0+qbck2FvRZ6CHdCQ1POG
+xcHH8QTbLAPqu9HnjSDSHVBMabbX32/Xflugt3OiO+ZBweMQnduCUTJFtCkuD1T0
+chT0k+P/0M/JN8+UNouWXmjPTv17BqZPdxOxFiECgYBaT6cDFNIb5uRhkSZHMCoY
+avxoDsXsV2MExpadNjeJPwAoWgHkDBK9EnAEJEL2GH2PArtPbdgWnZ0ZpVr4SeuI
+niCdWfRCI3XNP8D1iCCXiR4EysG+NOBEt4bWxMHenKiBeS5/j2ca6QonnfVLKBRI
+qkP+iBGyE3DCOUVnsONuIQKBgAIo0lJXp52cdQnspaOESPtP+O6dK3frjzGCP8s8
+lqdtHkgKnPORCIHCKFuiERyVcfsEQaC5odvxrt+xPdcBPNFDoZuzurY6jbzLBGJo
+HpP/3mfxXWipbuwBPTDmaHE4/v4YUaaP+m85eKIUh5YnPAJ0uz40gtv+XuAGTrUU
+E9fhAoGBALtMDtl8ouY0bkn1nEBYoyh0CEOCPPp2aovMdF9G4ecdyPPACZr0VFRU
+XR8B6est1xCBUGYtGnQdlB8QpQBUvzGiINCcFEChNC9rZCAZqPbvW7CEHGOWwD5d
+KBjQ93MQCFf0v79ijPupAOVNW5Vhxo4qwzQYaIfXnHr914u3mk+6
+-----END RSA PRIVATE KEY-----
+
+

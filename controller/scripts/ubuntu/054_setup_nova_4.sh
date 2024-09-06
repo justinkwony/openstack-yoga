@@ -46,7 +46,7 @@ node_ssh controller "sudo nova-manage cell_v2 discover_hosts --verbose"
 echo "Verifying operation of the Compute service."
 
 echo "openstack compute service list"
-openstack compute service list
+node_ssh controller "$AUTH; openstack compute service list"
 
 echo "Checking the cells and placement API are working successfully."
 echo "on controller node: nova-status upgrade check"

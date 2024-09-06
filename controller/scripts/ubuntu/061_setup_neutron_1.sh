@@ -14,11 +14,47 @@ exec_logfile
 indicate_current_auto
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Install the components
+# Prerequisites
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-echo "Installing additional packages for self-service networks."
-sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall neutron-common
-sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall neutron-server neutron-plugin-ml2
-sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent
-sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall neutron-metadata-agent
+echo "Setting up database for neutron."
+setup_database neutron "$NEUTRON_DB_USER" "$NEUTRON_DBPASS"
+
+source "$CONFIG_DIR/admin-openstackrc.sh"
+
+neutron_admin_user=neutron
+
+# Wait for keystone to come up
+wait_for_keystone
+
+echo "Creating neutron user and giving it admin role under service tenant."
+openstack user create \
+    --domain default  \
+    --password "$NEUTRON_PASS" \
+    "$neutron_admin_user"
+
+openstack role add \
+    --project "$SERVICE_PROJECT_NAME" \
+    --user "$neutron_admin_user" \
+    "$ADMIN_ROLE_NAME"
+
+echo "Registering neutron with keystone so that other services can locate it."
+openstack service create \
+    --name neutron \
+    --description "OpenStack Networking" \
+    network
+
+openstack endpoint create \
+    --region "$REGION" \
+    network \
+    public http://controller:9696
+
+openstack endpoint create \
+    --region "$REGION" \
+    network \
+    internal http://controller:9696
+
+openstack endpoint create \
+    --region "$REGION" \
+    network \
+    admin http://controller:9696

@@ -18,7 +18,7 @@ indicate_current_auto
 #------------------------------------------------------------------------------
 
 echo "Installing nova for compute node."
-sudo apt install -y nova-compute nova-compute-qemu
+sudo apt install -y --reinstall -o DPkg::options::=--force-confmiss nova-compute nova-compute-qemu
 
 echo "Configuring nova for compute node."
 
@@ -29,9 +29,6 @@ echo "Configuring $conf."
 
 echo "Configuring RabbitMQ message queue access."
 iniset_sudo $conf DEFAULT transport_url "rabbit://openstack:$RABBIT_PASS@controller"
-
-# Configuring [api] section.
-# iniset_sudo $conf api auth_strategy keystone
 
 nova_admin_user=nova
 
@@ -57,7 +54,7 @@ iniset_sudo $conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
 iniset_sudo $conf vnc enabled true
 iniset_sudo $conf vnc server_listen 0.0.0.0
 iniset_sudo $conf vnc server_proxyclient_address '$my_ip'
-# Using IP address because the host running the browser may not be able to
+
 # resolve the host name "controller"
 iniset_sudo $conf vnc novncproxy_base_url http://"$(hostname_to_ip controller)":6080/vnc_auto.html
 
@@ -78,9 +75,8 @@ iniset_sudo $conf placement auth_url http://controller:5000/v3
 iniset_sudo $conf placement username "$placement_admin_user"
 iniset_sudo $conf placement password "$PLACEMENT_PASS"
 
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Configuring service_user Section 
+# Configuring service_user Section
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 iniset_sudo $conf service_user send_service_user_token true
@@ -133,8 +129,7 @@ node_ssh controller "$AUTH; openstack compute service list --service nova-comput
 
 echo
 echo "Discovering compute hosts."
-echo "Run this command on controller every time compute hosts are added to" \
-     "the cluster."
+echo "Run this command on controller every time compute hosts are added to the cluster."
 node_ssh controller "sudo nova-manage cell_v2 discover_hosts --verbose"
 
 #------------------------------------------------------------------------------
@@ -144,16 +139,16 @@ node_ssh controller "sudo nova-manage cell_v2 discover_hosts --verbose"
 echo "Verifying operation of the Compute service."
 
 echo "openstack compute service list"
-openstack compute service list
-
-echo "List API endpoints to verify connectivity with the Identity service."
-echo "openstack catalog list"
-openstack catalog list
-
-echo "Listing images to verify connectivity with the Image service."
-echo "openstack image list"
-openstack image list
+node_ssh controller "$AUTH; openstack compute service list"
 
 echo "Checking the cells and placement API are working successfully."
 echo "on controller node: nova-status upgrade check"
 node_ssh controller "sudo nova-status upgrade check"
+
+# echo "List API endpoints to verify connectivity with the Identity service."
+# echo "openstack catalog list"
+# openstack catalog list
+
+# echo "Listing images to verify connectivity with the Image service."
+# echo "openstack image list"
+# openstack image list

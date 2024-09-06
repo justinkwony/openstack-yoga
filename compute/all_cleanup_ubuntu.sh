@@ -12,6 +12,8 @@ sudo apt remove -y --purge barbican-api barbican-worker barbican-keystone-listen
 sudo apt remove -y --purge python-networking-sfc python3-openstackclient cinder-api cinder-scheduler
 sudo apt remove -y --purge placement-api python3-pip swift swift-account swift-container swift-object xfsprogs
 sudo apt remove -y --purge python3-swift python3-swiftclient nova-api nova-conductor nova-novncproxy nova-scheduler
+sudo apt remove -y --purge neutron-common neutron-linuxbridge-agent neutron-openvswitch-agent neutron-dhcp-agent neutron-metadata-agent
+sudo apt remove -y --purge ovn-host neutron-ovn-metadata-agent
 
 sudo rm -rf /etc/cinder/ /etc/neutron/ /etc/nova/ /var/lib/cinder/ \
 	/var/lib/nova/ /var/lib/neutron/ /etc/placement/ /var/lib/openvswitch/ /etc/sysconfig/openstack-nova-novncproxy \

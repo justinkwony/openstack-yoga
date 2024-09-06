@@ -17,6 +17,9 @@ indicate_current_auto
 # Install and configure a compute node
 #------------------------------------------------------------------------------
 
+echo "Installing nova for compute node."
+sudo apt install -y --reinstall -o DPkg::options::=--force-confmiss nova-common nova-compute nova-compute-qemu
+
 echo "Configuring nova for compute node."
 
 placement_admin_user=placement
@@ -53,7 +56,6 @@ iniset_sudo $conf vnc server_listen 0.0.0.0
 iniset_sudo $conf vnc server_proxyclient_address '$my_ip'
 
 # resolve the host name "controller"
-
 iniset_sudo $conf vnc novncproxy_base_url http://"$(hostname_to_ip controller)":6080/vnc_auto.html
 
 # Configure [glance] section.
@@ -87,7 +89,7 @@ iniset_sudo $conf service_user password novaPass
 iniset_sudo $conf service_user username nova
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Finalize installation
+# change ownership of /var/lib/nova
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 sudo chown -R nova.nova /var/lib/nova
@@ -96,6 +98,7 @@ sudo chown -R nova.nova /var/lib/nova
 # Finalize installation
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+# Configure nova-compute.conf
 conf=/etc/nova/nova-compute.conf
 echo -n "Hardware acceleration for virtualization: "
 if sudo egrep -q '(vmx|svm)' /proc/cpuinfo; then
@@ -108,8 +111,7 @@ fi
 echo "Config: $(sudo grep virt_type $conf)"
 
 echo "Restarting nova services."
-sudo systemctl restart nova-compute.service
-sudo systemctl enable nova-compute.service
+sudo systemctl restart nova-compute
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Add the compute node to the cell database
@@ -137,7 +139,6 @@ node_ssh controller "sudo nova-manage cell_v2 discover_hosts --verbose"
 echo "Verifying operation of the Compute service."
 
 echo "openstack compute service list"
-# openstack compute service list
 node_ssh controller "$AUTH; openstack compute service list"
 
 echo "Checking the cells and placement API are working successfully."

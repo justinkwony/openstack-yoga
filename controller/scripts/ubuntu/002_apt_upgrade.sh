@@ -19,8 +19,7 @@ exec_logfile
 echo "Installing OpenStack client."
 sudo apt install -y -o Dpkg::Options::="--force-confdef" python3-openstackclient
 
-sudo DEBIAN_FRONTEND=noninteractive apt \
-   -o Dpkg::Options::="--force-confdef" -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt -o Dpkg::Options::="--force-confdef" -y upgrade
 sudo apt -y dist-upgrade
 
 # Clean apt cache

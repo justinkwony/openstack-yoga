@@ -18,16 +18,15 @@ indicate_current_auto
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo "Configuring neutron for compute node."
-
 conf=/etc/neutron/neutron.conf
 echo "Configuring $conf."
 
-echo "Configuring RabbitMQ message queue access."
-iniset_sudo $conf DEFAULT transport_url "rabbit://openstack:$RABBIT_PASS@controller"
-
 # Configuring [DEFAULT] section
 iniset_sudo $conf DEFAULT auth_strategy keystone
-iniset_sudo $conf DEFAULT allow_overlapping_ips False
+# iniset_sudo $conf DEFAULT allow_overlapping_ips False
+
+echo "Configuring RabbitMQ message queue access."
+iniset_sudo $conf DEFAULT transport_url "rabbit://openstack:$RABBIT_PASS@controller"
 
 neutron_admin_user=neutron
 
