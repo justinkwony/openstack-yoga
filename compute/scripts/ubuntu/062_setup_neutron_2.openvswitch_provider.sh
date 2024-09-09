@@ -24,10 +24,8 @@ echo "Configuring the Open vSwitch agent."
 conf=/etc/neutron/plugins/ml2/openvswitch_agent.ini
 
 # Edit the [ovs] section.
-# set_iface_list
-# PROVIDER_BRIDGE_NAME=$(ifnum_to_ifname 1)
-# echo "PROVIDER_BRIDGE_NAME=$PROVIDER_BRIDGE_NAME"
-# iniset_sudo $conf ovs bridge_mappings provider:$PROVIDER_BRIDGE_NAME,in_net_1:enp0s9
+# $ ovs-vsctl add-br br-provider
+# $ ovs-vsctl add-port br-provider PROVIDER_INTERFACE
 iniset_sudo $conf ovs bridge_mappings provider:br-provider
 
 # Edit the [securitygroup] section.
@@ -40,3 +38,41 @@ if ! sudo sysctl net.bridge.bridge-nf-call-iptables; then
     echo "# bridge support module added by The SkillPedia" >> /etc/modules
     echo br_netfilter >> /etc/modules
 fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Configure the Compute service to use the Networking service
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+neutron_admin_user=neutron
+
+echo "Configuring Compute to use Networking."
+conf=/etc/nova/nova.conf
+
+iniset_sudo $conf neutron auth_url http://controller:5000
+iniset_sudo $conf neutron auth_type password
+iniset_sudo $conf neutron project_domain_name default
+iniset_sudo $conf neutron user_domain_name default
+iniset_sudo $conf neutron region_name "$REGION"
+iniset_sudo $conf neutron project_name "$SERVICE_PROJECT_NAME"
+iniset_sudo $conf neutron username "$neutron_admin_user"
+iniset_sudo $conf neutron password "$NEUTRON_PASS"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Finalize installation
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+echo "Restarting the Compute service."
+sudo systemctl restart nova-compute.service
+
+echo "Restarting neutron-openvswitch-agent."
+sudo systemctl restart neutron-openvswitch-agent.service
+
+#------------------------------------------------------------------------------
+# Verifying
+#------------------------------------------------------------------------------
+# echo "Listing agents to verify successful launch of the neutron agents."
+
+# echo "openstack network agent list"
+# # openstack network agent list
+# AUTH="source $CONFIG_DIR/admin-openstackrc.sh"
+# node_ssh controller "$AUTH; openstack network agent list"
