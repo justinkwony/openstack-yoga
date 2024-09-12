@@ -1,5 +1,5 @@
-read -t 10 -p "========================= 063_setup_neutron_3"; echo
-./063_setup_neutron_3.sh
+# read -t 10 -p "========================= 063_setup_neutron_3"; echo
+# ./063_setup_neutron_3.sh
 # read -t 10 -p "========================= 064_setup_neutron_4"; echo
 # ./064_setup_neutron_4.sh
 # read -t 10 -p "========================= 065_setup_neutron_5"; echo
