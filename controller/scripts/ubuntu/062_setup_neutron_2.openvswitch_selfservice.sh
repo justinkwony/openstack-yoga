@@ -166,4 +166,4 @@ conf=/etc/neutron/dhcp_agent.ini
 iniset_sudo $conf DEFAULT interface_driver openvswitch
 iniset_sudo $conf DEFAULT dhcp_driver neutron.agent.linux.dhcp.Dnsmasq
 iniset_sudo $conf DEFAULT enable_isolated_metadata true
-# iniset_sudo $conf DEFAULT use_namespaces False
+# iniset_sudo $conf DEFAULT force_metadata true
