@@ -13,9 +13,12 @@ exec_logfile
 
 indicate_current_auto
 
-#------------------------------------------------------------------------------
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Install and configure compute node
-#------------------------------------------------------------------------------
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Install the components
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 echo "Installing networking components for compute node."
 sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall neutron-openvswitch-agent
@@ -24,13 +27,27 @@ sudo apt install -y -o DPkg::options::=--force-confmiss --reinstall neutron-open
 # Configure the common component
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-echo "Configuring neutron for compute node."
 conf=/etc/neutron/neutron.conf
 echo "Configuring $conf."
 
 # Configuring [DEFAULT] section
+iniset_sudo $conf DEFAULT auth_strategy keystone
+
 echo "Configuring RabbitMQ message queue access."
 iniset_sudo $conf DEFAULT transport_url "rabbit://openstack:$RABBIT_PASS@controller"
+
+# neutron_admin_user=neutron
+
+# # Configuring [keystone_authtoken] section
+# iniset_sudo $conf keystone_authtoken www_authenticate_uri http://controller:5000
+# iniset_sudo $conf keystone_authtoken auth_url http://controller:5000
+# iniset_sudo $conf keystone_authtoken memcached_servers controller:11211
+# iniset_sudo $conf keystone_authtoken auth_type password
+# iniset_sudo $conf keystone_authtoken project_domain_name default
+# iniset_sudo $conf keystone_authtoken user_domain_name default
+# iniset_sudo $conf keystone_authtoken project_name "$SERVICE_PROJECT_NAME"
+# iniset_sudo $conf keystone_authtoken username "$neutron_admin_user"
+# iniset_sudo $conf keystone_authtoken password "$NEUTRON_PASS"
 
 # lock_path
 iniset_sudo $conf oslo_concurrency lock_path /var/lib/neutron/tmp

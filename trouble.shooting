@@ -1,0 +1,8 @@
+Trouble shooting
+
+Host 'nhiscs04' is not mapped to any cell
+
+# openstack server show test1 | grep fault
+# after new compute node added,
+# on controller node
+sudo nova-manage cell_v2 discover_hosts --verbose

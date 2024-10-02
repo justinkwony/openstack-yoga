@@ -73,7 +73,7 @@ conf="$TACKER_DIR/nvf-demo-vim-config.yaml"
 echo -e "\n>>> Creating $conf."
 
 cat << EOM > "$conf"
-auth_url: http://$CONTROLLER_MGMT_IP:5000/v3/
+auth_url: http://$CONTROLLER_MGMT_IP:5000/v3
 username: $DEFAULT_VIM_USER
 password: $DEFAULT_VIM_PASSWORD
 project_name: $DEFAULT_VIM_PROJECT_NAME

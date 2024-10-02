@@ -1,7 +1,8 @@
 source ~/config/admin-openstackrc.sh
 
 openstack network create --share --external --provider-physical-network provider --provider-network-type flat provider
-openstack subnet create --network provider --allocation-pool start="192.168.0.151,end=192.168.0.200" --dns-nameserver "168.126.63.1" --dns-nameserver "168.126.63.2" --gateway "192.168.0.1" --subnet-range "192.168.0.0/24" provider
+openstack subnet create --network provider --allocation-pool start="10.1.0.2,end=10.1.0.254" --gateway "10.1.0.1" --subnet-range "10.1.0.0/24" provider
+#openstack subnet create --network provider --allocation-pool start="192.168.0.151,end=192.168.0.200" --dns-nameserver "168.126.63.1" --dns-nameserver "168.126.63.2" --gateway "192.168.0.1" --subnet-range "192.168.0.0/24" provider
 #openstack subnet create --network provider --allocation-pool start="192.168.200.151,end=192.168.200.200" --dns-nameserver "121.88.255.50" --dns-nameserver "121.88.255.49" --gateway "192.168.200.254" --subnet-range "192.168.200.0/24" provider
 openstack subnet delete provider;openstack network delete provider
 
@@ -23,17 +24,16 @@ openstack network create selfservice
 openstack subnet create --network selfservice --gateway "172.16.1.1" --subnet-range "172.16.1.0/24" selfservice
 openstack subnet delete selfservice;openstack network delete selfservice
 
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="f6e3ca91-4de9-41fd-9bbd-e50dc12990ec",v4-fixed-ip="192.168.1.11" --user-data user-data.conf --availability-zone nova:compute --wait "bastion"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network provider --user-data ~/user-data.conf --availability-zone nova:compute --wait "bastion"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network in_net_1 --user-data ~/user-data.conf --availability-zone nova:compute --wait "bastion"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network provider --user-data ~/user-data.conf --wait "test1"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="f6e3ca91-4de9-41fd-9bbd-e50dc12990ec",v4-fixed-ip="10.1.0.11" --user-data ~/user-data.conf --availability-zone nova:nhiscs04 --wait "test1"
+openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network provider --user-data ~/user-data.conf --availability-zone nova:nhiscs05 --wait "test2"
+openstack server create --flavor cirros256 --image "cirros" --network provider --availability-zone nova:nhiscs04 --wait "cirros1"
 
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="e1e9d71f-3c70-4751-9c1f-1de8d6296447",v4-fixed-ip="172.16.1.11" --user-data user-data.cfg --availability-zone nova:compute --wait "ap1"
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="a3e6174b-d846-4f0a-89f5-4adcd013c472",v4-fixed-ip="172.16.2.11" --user-data user-data.cfg --availability-zone nova:compute2 --wait "db1"
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="e1e9d71f-3c70-4751-9c1f-1de8d6296447",v4-fixed-ip="172.16.1.11" --security-group sg_base --user-data user-data.cfg --availability-zone nova:compute --wait "ap1"
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="a3e6174b-d846-4f0a-89f5-4adcd013c472",v4-fixed-ip="172.16.2.11" --security-group sg_base --user-data user-data.cfg --availability-zone nova:compute2 --wait "db1"
 
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --nic net-id="c8bce85c-fbcc-4248-867c-ac5d4ce9ec3a",v4-fixed-ip="192.168.1.11" --user-data user-data.cfg --availability-zone nova:compute --wait "bastion"
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network provider --user-data ~/user-data.cfg --availability-zone nova:compute --wait "bastion"
-openstack server create --flavor ubuntu512 --image "Ubuntu 22.04.4" --network in_net_1 --user-data ~/user-data.cfg --availability-zone nova:compute --wait "bastion"
-
-cat user-data.cfg
+cat user-data.conf
 #cloud-config
 user: ubuntu
 chpasswd:
@@ -114,6 +114,8 @@ sudo ovs-vsctl add-port br-provider enp0s8
 sudo ovs-vsctl add-br br-in_net_1
 sudo ovs-vsctl add-port br-in_net_1 enp0s9
 
+sudo ovs-vsctl del-port br-provider eno1;sudo ovs-vsctl del-br br-provider
+sudo ovs-vsctl add-br br-provider;sudo ovs-vsctl add-port br-provider eno1
 
 
 
@@ -131,8 +133,8 @@ iface enp0s8 inet manual
 up ip link set dev $IFACE up
 down ip link set dev $IFACE down
 # The provider network interface
-auto enp0s9
-iface enp0s9 inet manual
+auto eno1
+iface eno1 inet manual
 up ip link set dev $IFACE up
 down ip link set dev $IFACE down
 

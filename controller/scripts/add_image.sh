@@ -11,6 +11,6 @@ source "$LIB_DIR/functions.guest.sh"
 
 source "$CONFIG_DIR/admin-openstackrc.sh"
 
-# openstack security group create sg_base
-openstack security group rule create --protocol tcp --dst-port 22:22 default
-openstack security group rule create --protocol icmp default
+openstack image create --file "/home/stack/openstack-yoga/controller/scripts/img/jammy-server-cloudimg-amd64.img" \
+    --disk-format qcow2 --container-format bare \
+    --public "Ubuntu 22.04.4"

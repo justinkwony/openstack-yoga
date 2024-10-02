@@ -10,7 +10,6 @@ sudo apt purge mariadb-server
 sudo apt autoremove
 sudo apt remove -y --purge barbican-api
 sudo apt remove -y --purge memcached
-sudo apt remove -y --purge git 
 sudo apt remove -y --purge python3-pip virtualenv heat-api heat-api-cfn heat-engine python3-openstackclient cinder-api cinder-scheduler
 sudo apt remove -y --purge heat-api
 sudo apt remove -y --purge heat-engine
@@ -26,7 +25,7 @@ sudo apt remove -y --purge swift-account
 sudo apt remove -y --purge python3-swift python3-swiftclient keystone nova-api nova-conductor nova-novncproxy nova-scheduler nova-compute
 sudo apt remove -y --purge python3-trove trove-common trove-api trove-taskmanager trove-conductor
 sudo apt remove -y --purge neutron-common neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent
-sudo apt remove -y --purge ovn-central openvswitch-common
+sudo apt remove -y --purge ovn-central
 
 sudo rm -rf /etc/cinder/ /etc/glance/ /etc/apache2/ /etc/mysql /etc/keystone/ /etc/my.cnf.d/ /etc/neutron/ /etc/nova/ /var/lib/cinder/ \
 	/var/lib/apache2/ /var/lib/keystone/ /var/lib/placement /var/lib/mysql /var/lib/glance/ /var/lib/nova/ /var/lib/openstack-dashboard/ \
@@ -43,3 +42,5 @@ sudo rm -rf /var/cache/apache2 /var/cache/barbican /var/cache/cinder /var/cache/
 sudo rm -rf /var/log/*.lsl
 sudo sed -i "s/^net.*$//g" /etc/sysctl.conf
 sudo apt autoremove -y
+
+sudo ovs-vsctl del-port br-provider eno1;sudo ovs-vsctl del-br br-provider

@@ -1,5 +1,4 @@
 sudo apt remove -y --purge barbican-api
-sudo apt remove -y --purge git
 sudo apt remove -y --purge python3-pip virtualenv python3-openstackclient cinder-api cinder-scheduler
 sudo apt remove -y --purge python3-openstackclient
 sudo apt remove -y --purge cinder-api cinder-scheduler
@@ -30,3 +29,5 @@ sudo apt autoremove -y
 sudo umount /dev/sdb
 sudo umount /dev/sdc
 sudo sed -i '/\/srv\/node/d' /etc/fstab
+
+sudo ovs-vsctl del-port br-provider eno1;sudo ovs-vsctl del-br br-provider

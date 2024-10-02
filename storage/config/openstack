@@ -19,8 +19,8 @@ unset arch
 CIRROS_IMG_NAME="cirros"
 
 #------------------------------------------------------------------------------
-MGMT_3_OCTET="10.10.0"
-PROV_3_OCTET="192.168.0"
+MGMT_3_OCTET="10.0.0"
+PROV_3_OCTET="10.1.0"
 PRIV_3_OCTET="172.16.1"
 
 # Networks used by OpenStack setup

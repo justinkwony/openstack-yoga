@@ -5,7 +5,6 @@ sudo apt remove -y --purge python3-wcwidth
 sudo apt remove -y --purge python3-cmd2
 sudo apt remove -y --purge python3-oslo.utils python3-docutils python3-oslo.serialization python3-oslo.context python3-deprecation python3-cliff python3-docutils
 sudo apt remove -y --purge barbican-api
-sudo apt remove -y --purge git
 sudo apt remove -y --purge python3-pip virtualenv python3-openstackclient cinder-api cinder-scheduler
 sudo apt remove -y --purge python3-openstackclient
 sudo apt remove -y --purge cinder-api cinder-scheduler

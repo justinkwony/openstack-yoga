@@ -26,12 +26,4 @@ read -t 10 -p "========================= 051_setup_nova_1"; echo
 ./051_setup_nova_1.sh
 read -t 10 -p "========================= 052_setup_nova_2"; echo
 ./052_setup_nova_2.sh
-# read -t 10 -p "========================= 053_setup_nova_3"; echo
-# ./053_setup_nova_3.sh
-# read -t 10 -p "========================= 054_setup_nova_4"; echo
-# ./054_setup_nova_4.sh
-read -t 10 -p "========================= 061_setup_neutron_1"; echo
-./061_setup_neutron_1.sh
-read -t 10 -p "========================= 062_setup_neutron_2"; echo
-./062_setup_neutron_2.openvswitch_provider.sh
 echo "========================= continue on storage, compute node"; echo
