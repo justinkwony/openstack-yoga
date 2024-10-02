@@ -38,7 +38,7 @@ set_apt_proxy
 
 # Get apt index files
 sudo apt update
-sudo apt install openvswitch-switch
+sudo apt install -y ifupdown openvswitch-switch
 
 # ---------------------------------------------------------------------------
 # Enable the OpenStack repository

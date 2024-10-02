@@ -2,19 +2,19 @@
 ```
 ------------+--------------------------+--------------------------+------------
             |                          |                          |
-      enp0s3|10.10.0.11          enp0s3|10.10.0.31          enp0s3|10.10.0.41
+      enp0s3|10.0.0.11,12,13     enp0s3|10.0.0.14,15        enp0s3|10.0.0.xx    for management
 +-----------+-----------+  +-----------+-----------+  +-----------+-----------+
-|     [ controller ]    |  |       [ compute ]     |  |       [ storage ]     |
-|     (Control Node)    |  |     Nova-Compute      |  |      Swift-Container  |
-| MariaDB   RabbitMQ    |  |     Swift-Container   |  |      Swift-Account    |
-| Memcached Swift Proxy |  |     Swift-Account     |  |      Swift-Object     |
-| Keystone  httpd       |  |     Swift-Object      |  |      Cinder Volume    |
+|     [ controller ]    |  |      [ compute ]      |  |      [ storage ]      |
+|     (Control Node)    |  |     Nova-Compute      |  |     Swift-Container   |
+| MariaDB   RabbitMQ    |  |     Neutron-agent     |  |     Swift-Account     |
+| Memcached Swift Proxy |  |                       |  |     Swift-Object      |
+| Keystone  httpd       |  |                       |  |     Cinder Volume     |
 +-----------------------+  +-----------------------+  +-----------------------+
-                                 sdb,sdc (swift)             sdb,sdc (swift)
+                                                             sdb,sdc (swift)
                                                              sdd (cinder)
 +-----------+-----------+  +-----------+-----------+  +-----------+-----------+
-      enp0s8|Unconfigured        enp0s8|Unconfigured        enp0s8|Unconfigured
-      enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT
+      enp0s8|unmanaged           enp0s8|unmanaged           enp0s8|unmanaged    for provider
+      enp0s9|NAT                 enp0s9|NAT                 enp0s9|NAT          (option)
 ```
 add Network Interface 네트워크 추가\
 add Storage 10Gb 저장소 추가
@@ -23,16 +23,17 @@ Create three Virtual Machines in Oracle VM Virtual Box as given in the diagrame 
 Login as user "stack" and modify all nodes
 ```
 /etc/hosts
-10.10.0.11	controller
-10.10.0.31	compute
-10.10.0.41	storage
+10.0.0.11	controller controller1
+10.0.0.12	controller2
+10.0.0.13	controller3
+10.0.0.14	compute1
+10.0.0.15	compute2
+10.0.0.xx	storage
 ```
 generate ssh key pair, all nodes
 ```
 ssh-keygen -P ""
 ssh-copy-id controller
-ssh-copy-id compute
-ssh-copy-id storage
 ```
 ```
 git clone https://github.com/justinkwony/openstack-yoga.git
@@ -44,6 +45,8 @@ cd scripts
 # 미리 준비 controller/scripts/img
 cd ubuntu
 ```
+Ubuntu Cloud image로 변경
+https://cloud-images.ubuntu.com/jammy/
 
 Execute the scriptes in the given order:
 ```

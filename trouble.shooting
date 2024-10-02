@@ -6,3 +6,27 @@ Host 'nhiscs04' is not mapped to any cell
 # after new compute node added,
 # on controller node
 sudo nova-manage cell_v2 discover_hosts --verbose
+
+VM 생성시 169.254.169.254 접근 에러, 부팅 지연
+
+provider network if(NIC)가 up 상태인지 확인
+- controller node에는 'ifupdown' package가 (openstack component 설치중 자동)설치되는데,
+  compute node에는 수동설치 필요
+  sudo apt install ifupdown
+
+  cat /etc/network/interfaces
+  source /etc/network/interfaces.d/*
+
+  cat /etc/network/interfaces.d/INTERFACE_NAME
+# The provider network interface
+auto INTERFACE_NAME
+iface INTERFACE_NAME inet manual
+up ip link set dev $IFACE up
+down ip link set dev $IFACE down
+
+  cat /etc/network/interfaces.d/eno1
+# The provider network interface
+auto eno1
+iface eno1 inet manual
+up ip link set dev $IFACE up
+down ip link set dev $IFACE down
